@@ -27,7 +27,7 @@ package com.acemobe.spriter
 		private	var	quadBatch:QuadBatch;
 		private	var	nextAnim:String = "";
 
-		public function Spriter(name:String, data:XML, atlas:TextureAtlas = null)
+		public function Spriter(name:String, data:XML, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
 		{
 			super();
 			
@@ -39,11 +39,11 @@ package com.acemobe.spriter
 			
 			if (!animation)
 			{
-				animation = SpriterCache.addAnimation(name, new SpriterAnimation (data, atlas));
+				animation = SpriterCache.addAnimation (name, new SpriterAnimation (data, atlas, entities, animations));
 			}
 			
 			quadBatch = new QuadBatch ();
-			addChild(quadBatch);
+			addChild (quadBatch);
 		}
 		
 		public override function dispose():void
@@ -62,21 +62,17 @@ package com.acemobe.spriter
 			super.dispose();
 		}
 
-		public	function hasAnim (animName:String):Boolean
+		public	function loadEntity (name:String, animations:Array = null):void
 		{
-			var	entity:Entity = animation.entities[currentEntity] as Entity;
-			
-			for (var a:int = 0; a < entity.animations.length; a++)
+			for (var a:int = 0; a < animation.entities.length; a++)
 			{
-				var	anim:Animation = entity.animations[a] as Animation;
+				var	entity:Entity = animation.entities[a] as Entity;
 				
-				if (anim.name == animName)
+				if (entity.name == name && !entity.loaded)
 				{
-					return true;
+					entity.parse (animation, animations);
 				}
 			}
-
-			return false;
 		}
 		
 		public	function set entity (name:String):void
@@ -91,6 +87,41 @@ package com.acemobe.spriter
 					return;
 				}
 			}			
+		}
+		
+		public	function hasAnim (animName:String):Boolean
+		{
+			var	entity:Entity = animation.entities[currentEntity] as Entity;
+			
+			for (var a:int = 0; a < entity.animations.length; a++)
+			{
+				var	anim:Animation = entity.animations[a] as Animation;
+				
+				if (anim.name == animName && anim.loaded)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+		
+		public	function loadAnim (name:String, animName:String):void
+		{
+			for (var e:int = 0; e < animation.entities.length; e++)
+			{
+				var	entity:Entity = animation.entities[e] as Entity;
+			
+				for (var a:int = 0; a < entity.animations.length; a++)
+				{
+					var	anim:Animation = entity.animations[a] as Animation;
+					
+					if (anim.name == animName && !anim.loaded)
+					{
+						anim.parse (animation);
+					}
+				}
+			}
 		}
 		
 		public	function play (animName:String, nextAnim:String = ""):void

@@ -9,9 +9,11 @@ package com.acemobe.spriter.data
 		
 		public	var	id:int = 0;
 		public	var	name:String = "";
+		public	var	animationXml:XML;
 		public	var	loopType:int = LOOPING;
 		public	var	length:int = 0;
-		
+		public	var	loaded:Boolean = false;
+
 		public	var	mainlineKeys:Array = [];
 		public	var	timelines:Array = [];
 
@@ -24,12 +26,10 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (spriteAnim:SpriterAnimation, animationXml:XML):void
+		public	function parse (spriteAnim:SpriterAnimation):void
 		{
 			if (animationXml.hasOwnProperty("@id"))
 				id = animationXml.@id;
-			if (animationXml.hasOwnProperty("@name"))
-				name = animationXml.@name;
 			if (animationXml.hasOwnProperty("@length"))
 				length = animationXml.@length;
 			if (animationXml.hasOwnProperty("@looping"))
@@ -55,6 +55,8 @@ package com.acemobe.spriter.data
 				
 				timelines.push (timeline);
 			}
+			
+			loaded = true;
 		}
 		
 		public	function setCurrentTime(newTime:Number):void

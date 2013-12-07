@@ -9,7 +9,7 @@ package com.acemobe.spriter.data
 			
 		}
 			
-		public	static	function parse (spriteAnim:SpriterAnimation, data:XML):void
+		public	static	function parse (spriteAnim:SpriterAnimation, data:XML, entities:Array = null, animations:Array = null):void
 		{
 			for each(var folderXml:XML in data.folder)
 			{
@@ -22,8 +22,14 @@ package com.acemobe.spriter.data
 			for each(var entityXml:XML in data.entity)
 			{
 				var	entity:Entity = new Entity ();
-				entity.parse (spriteAnim, entityXml);
+				entity.name = entityXml.@name;
+				entity.entityXml = entityXml;
 				
+				if (entities == null || entities.indexOf (entity.name) != -1)
+				{
+					entity.parse (spriteAnim, animations);
+				}
+
 				spriteAnim.entities.push (entity);
 			}
 		}

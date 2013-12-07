@@ -11,10 +11,10 @@ package com.acemobe.spriter
 		public	var	activeCharacterMap:Array = [];
 		public	var	atlas:TextureAtlas;
 		
-		public function SpriterAnimation(data:XML, atlas:TextureAtlas)
+		public function SpriterAnimation(data:XML, atlas:TextureAtlas, entities:Array = null, animations:Array = null)
 		{
 			this.atlas = atlas;
-			SpriterXML.parse (this, data);
+			SpriterXML.parse (this, data, entities, animations);
 		}
 	}
 }
