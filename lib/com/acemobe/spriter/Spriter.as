@@ -7,6 +7,7 @@ package com.acemobe.spriter
 	
 	import starling.animation.IAnimatable;
 	import starling.display.Image;
+	import starling.display.QuadBatch;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -14,17 +15,17 @@ package com.acemobe.spriter
 	
 	public class Spriter extends Sprite implements IAnimatable 
 	{
-		public	var	animation:SpriterAnimation;
+		private	var	animation:SpriterAnimation;
 		
-		public	var	currentEntity:int = 0;
-		public	var	currentAnimation:int = 0; 
-		public	var	currentTime:Number = 0.0;
-		public	var	currentColor:int = 0xffffff;
+		private	var	currentEntity:int = 0;
+		private	var	currentAnimation:int = 0; 
+		private	var	currentTime:Number = 0.0;
+		private	var	currentColor:int = 0xffffff;
 		
-		protected var imagesByName:Object;
+		private var imagesByName:Object;
 
-		public	var	baseSprite:Sprite;
-		public	var	nextAnim:String = "";
+		private	var	quadBatch:QuadBatch;
+		private	var	nextAnim:String = "";
 
 		public function Spriter(name:String, data:XML, atlas:TextureAtlas = null)
 		{
@@ -35,13 +36,14 @@ package com.acemobe.spriter
 			imagesByName = {};
 			
 			animation = SpriterCache.findAnimation (name);
+			
 			if (!animation)
 			{
 				animation = SpriterCache.addAnimation(name, new SpriterAnimation (data, atlas));
 			}
 			
-			baseSprite = new Sprite ();
-			addChild(baseSprite);
+			quadBatch = new QuadBatch ();
+			addChild(quadBatch);
 		}
 		
 		public override function dispose():void
@@ -52,7 +54,7 @@ package com.acemobe.spriter
 				imagesByName[name] = null;
 			}
 
-			baseSprite.removeChildren(0, -1, true);
+			quadBatch.dispose();
 			removeChildren(0, -1, true);
 			
 			imagesByName = null;
@@ -143,6 +145,8 @@ package com.acemobe.spriter
 					image.visible = false;
 				}
 				
+				quadBatch.reset();
+				
 				for(var	k:int = 0; k < anim.objectKeys.length; k++)
 				{   
 					var	key:TimelineKey = anim.objectKeys[k] as TimelineKey;
@@ -163,14 +167,14 @@ package com.acemobe.spriter
 								image.pivotY = spriteKey.pivot_y * image.height;
 							}
 							
-							image.x = spriteKey.info.x;
-							image.y = spriteKey.info.y;
-							image.scaleX = spriteKey.info.scaleX;
-							image.scaleY = spriteKey.info.scaleY;
-							image.rotation = deg2rad (fixRotation (spriteKey.info.angle));
+							image.x = spriteKey.x;
+							image.y = spriteKey.y;
+							image.scaleX = spriteKey.scaleX;
+							image.scaleY = spriteKey.scaleY;
+							image.rotation = deg2rad (fixRotation (spriteKey.angle));
 							image.visible = true;
 							
-							baseSprite.addChild(image);
+							quadBatch.addImage(image);
 						}
 					}
 				}

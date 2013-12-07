@@ -23,7 +23,19 @@ package com.acemobe.spriter.data
 		{
 			super.parse(spriteAnim, timelineXml);
 			
-			info.parse(timelineXml.object[0]);
+//			info.parse(timelineXml.object[0]);
+			if (timelineXml.object[0].hasOwnProperty("@x"))
+				x = timelineXml.object[0].@x;
+			if (timelineXml.object[0].hasOwnProperty("@y"))
+				y = -timelineXml.object[0].@y;
+			if (timelineXml.object[0].hasOwnProperty("@angle"))
+				angle = timelineXml.object[0].@angle;
+			if (timelineXml.object[0].hasOwnProperty("@scale_x"))
+				scaleX = timelineXml.object[0].@scale_x;
+			if (timelineXml.object[0].hasOwnProperty("@scale_y"))
+				scaleY = timelineXml.object[0].@scale_y;
+			if (timelineXml.object[0].hasOwnProperty("@a"))
+				a = timelineXml.object[0].@a;
 
 			if (timelineXml.object[0].hasOwnProperty("@folder"))
 				folder = timelineXml.object[0].@folder;
@@ -99,7 +111,7 @@ package com.acemobe.spriter.data
 		
 		public	override function linearKey (keyB:TimelineKey, t:Number):void
 		{
-			linearSpatialInfo (info, keyB.info, spin, t);
+			linearSpatialInfo (this, keyB, spin, t);
 		
 			if (!useDefaultPivot)
 			{

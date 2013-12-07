@@ -17,8 +17,21 @@ package com.acemobe.spriter.data
 		{
 			super.parse(spriteAnim, timelineXml);
 
-			info.parse(timelineXml.bone[0]);
+//				info.parse(timelineXml.bone[0]);
 
+			if (timelineXml.bone[0].hasOwnProperty("@x"))
+				x = timelineXml.bone[0].@x;
+			if (timelineXml.bone[0].hasOwnProperty("@y"))
+				y = -timelineXml.bone[0].@y;
+			if (timelineXml.bone[0].hasOwnProperty("@angle"))
+				angle = timelineXml.bone[0].@angle;
+			if (timelineXml.bone[0].hasOwnProperty("@scale_x"))
+				scaleX = timelineXml.bone[0].@scale_x;
+			if (timelineXml.bone[0].hasOwnProperty("@scale_y"))
+				scaleY = timelineXml.bone[0].@scale_y;
+			if (timelineXml.bone[0].hasOwnProperty("@a"))
+				a = timelineXml.bone[0].@a;
+			
 			if (timelineXml.hasOwnProperty("@length"))
 				length = timelineXml.@length;
 			if (timelineXml.hasOwnProperty("@width"))
@@ -29,8 +42,8 @@ package com.acemobe.spriter.data
 		{
 			if (paintDebugBones)
 			{
-				var	drawLength:Number = length * info.scaleX;
-				var	drawHeight:Number = width * info.scaleY;
+				var	drawLength:Number = length * scaleX;
+				var	drawHeight:Number = width * scaleY;
 				// paint debug bone representation 
 				// e.g. line starting at x,y,at angle, 
 				// of length drawLength, and height drawHeight
@@ -58,7 +71,7 @@ package com.acemobe.spriter.data
 		public	override function linearKey (keyB:TimelineKey, t:Number):void
 		// keyB must be BoneTimelineKeys
 		{
-			linearSpatialInfo(info, keyB.info, spin, t);
+			linearSpatialInfo(this, keyB, spin, t);
 			
 			if (paintDebugBones)
 			{

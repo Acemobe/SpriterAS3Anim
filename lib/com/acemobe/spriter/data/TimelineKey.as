@@ -1,6 +1,9 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.Spriter;
 	import com.acemobe.spriter.SpriterAnimation;
+	
+	import starling.utils.deg2rad;
 
 	public class TimelineKey
 	{
@@ -18,11 +21,16 @@ package com.acemobe.spriter.data
 		public	var	c2:Number = 0;
 		public	var	spin:int = 1;
 
-		public	var	info:SpatialInfo;
+//		SpatialInfo;
+		public	var	x:Number = 0; 
+		public	var	y:Number = 0; 
+		public	var	angle:Number = 0;
+		public	var	scaleX:Number = 1; 
+		public	var	scaleY:Number = 1; 
+		public	var	a:Number = 1;
 		
 		public function TimelineKey ()
 		{
-			info = new SpatialInfo ();
 		}
 		
 		public	function copy ():*
@@ -43,7 +51,14 @@ package com.acemobe.spriter.data
 			clone.c1 = this.c1;
 			clone.c2 = this.c2;
 			clone.spin = this.spin;
-			this.info.clone (clone.info);
+	
+			clone.x = this.x;
+			clone.y = this.y;
+			clone.angle = this.angle;
+			clone.scaleX = this.scaleX;
+			clone.scaleY = this.scaleY;
+			clone.a = this.a;
+//			this.info.clone (clone.info);
 		}
 		
 		public	function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
@@ -116,14 +131,14 @@ package com.acemobe.spriter.data
 			return ((b-a)*t)+a;
 		}
 		
-		public	function linearSpatialInfo(infoA:SpatialInfo, infoB:SpatialInfo, spin:int, t:Number):void
+		public	function linearSpatialInfo(infoA:TimelineKey, infoB:TimelineKey, spin:int, t:Number):void
 		{
-			info.x = linear (infoA.x, infoB.x, t); 
-			info.y = linear (infoA.y, infoB.y, t);  
-			info.angle = angleLinear (infoA.angle, infoB.angle, spin, t); 
-			info.scaleX = linear (infoA.scaleX, infoB.scaleX, t); 
-			info.scaleY = linear (infoA.scaleY, infoB.scaleY, t); 
-			info.a = linear (infoA.a, infoB.a, t);
+			x = linear (infoA.x, infoB.x, t); 
+			y = linear (infoA.y, infoB.y, t);  
+			angle = angleLinear (infoA.angle, infoB.angle, spin, t); 
+			scaleX = linear (infoA.scaleX, infoB.scaleX, t); 
+			scaleY = linear (infoA.scaleY, infoB.scaleY, t); 
+			a = linear (infoA.a, infoB.a, t);
 		}
 		
 		public	function angleLinear(angleA:Number, angleB:Number, spin:int, t:Number):Number
@@ -163,6 +178,33 @@ package com.acemobe.spriter.data
 		public	function cubic(a:Number, b:Number, c:Number, d:Number, t:Number):Number
 		{
 			return linear(quadratic(a,b,c,t),quadratic(b,c,d,t),t);
+		}
+		
+		public	function	unmapFromParent(parentInfo:TimelineKey):void
+		{
+			angle += parentInfo.angle;
+			scaleX *= parentInfo.scaleX;
+			scaleY *= parentInfo.scaleY;
+			a *= parentInfo.a;
+			
+			if (x != 0 || y != 0)  
+			{
+				var	new_angle:Number = deg2rad (Spriter.fixRotation (parentInfo.angle));
+				var	preMultX:Number = x * parentInfo.scaleX;
+				var	preMultY:Number = y * parentInfo.scaleY;
+				var	s:Number = Math.sin (new_angle);
+				var	c:Number = Math.cos (new_angle);
+				x = (preMultX * c) - (preMultY * s);
+				y = (preMultX * s) + (preMultY * c);
+				x += parentInfo.x;
+				y += parentInfo.y;
+			}
+			else 
+			{
+				// Mandatory optimization for future features           
+				x = parentInfo.x;
+				y = parentInfo.y;
+			}
 		}
 	}
 }

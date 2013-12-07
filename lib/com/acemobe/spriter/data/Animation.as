@@ -18,6 +18,7 @@ package com.acemobe.spriter.data
 		public	var	currentTime:int = 0;
 
 		public	var	objectKeys:Array = [];
+		public	var	transformedBoneKeys:Array = [];
 
 		public function Animation()
 		{
@@ -72,11 +73,11 @@ package com.acemobe.spriter.data
 		
 		public	function updateCharacter(mainKey:MainlineKey, newTime:int):void
 		{
-			var	transformedBoneKeys:Array = [];
 			var	currentRef:Ref;
 			var	currentKey:TimelineKey;
 			
-			objectKeys = [];
+			transformedBoneKeys.length = 0;
+			objectKeys.length = 0;
 			
 			for(var	b:int = 0; b < mainKey.boneRefs.length; b++)
 			{
@@ -85,7 +86,7 @@ package com.acemobe.spriter.data
 				
 				if (currentRef.parent >= 0)
 				{
-					currentKey.info.unmapFromParent (transformedBoneKeys[currentRef.parent].info);
+					currentKey.unmapFromParent (transformedBoneKeys[currentRef.parent]);
 				}
 			
 				transformedBoneKeys.push (currentKey);
@@ -98,7 +99,7 @@ package com.acemobe.spriter.data
 				
 				if (currentRef.parent >= 0)
 				{
-					currentKey.info.unmapFromParent (transformedBoneKeys[currentRef.parent].info);
+					currentKey.unmapFromParent (transformedBoneKeys[currentRef.parent]);
 				}
 				
 				objectKeys.push (currentKey);
