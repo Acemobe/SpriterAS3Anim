@@ -35,6 +35,14 @@ package com.acemobe.spriter.data
 			}
 		}    
 		
+		public	override function copy ():*
+		{
+			var	copy:TimelineKey = new BoneTimelineKey ();
+			clone (copy);
+			
+			return copy;
+		}
+
 		public	override function clone (clone:TimelineKey):void
 		{
 			super.clone(clone);
@@ -45,21 +53,17 @@ package com.acemobe.spriter.data
 			c.width = this.width;
 		}
 		
-		public	override function linearKey (keyB:TimelineKey, t:Number):TimelineKey
+		public	override function linearKey (keyB:TimelineKey, t:Number):void
 		// keyB must be BoneTimelineKeys
 		{
-			var	returnKey:BoneTimelineKey = new BoneTimelineKey ();
-			clone (returnKey);
-			returnKey.info = linearSpatialInfo(info, keyB.info, spin, t);
+			linearSpatialInfo(info, keyB.info, spin, t);
 			
 			if (paintDebugBones)
 			{
 				var keyBBone:BoneTimelineKey = keyB as BoneTimelineKey; 
-				returnKey.length = linear (length, keyBBone.length, t);
-				returnKey.width = linear (width, keyBBone.width, t);
+				length = linear (length, keyBBone.length, t);
+				width = linear (width, keyBBone.width, t);
 			}
-			
-			return returnKey;
 		}
 	}
 }

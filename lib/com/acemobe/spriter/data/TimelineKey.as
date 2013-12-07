@@ -22,6 +22,14 @@ package com.acemobe.spriter.data
 		{
 			info = new SpatialInfo ();
 		}
+		
+		public	function copy ():*
+		{
+			var	copy:TimelineKey = new TimelineKey ();
+			clone (copy);
+			
+			return copy;
+		}
 
 		public function clone (clone:TimelineKey):void
 		{
@@ -33,7 +41,7 @@ package com.acemobe.spriter.data
 			clone.c1 = this.c1;
 			clone.c2 = this.c2;
 			clone.spin = this.spin;
-			clone.info = this.info.clone ();
+			this.info.clone (clone.info);
 		}
 		
 		public	function parse (timelineXml:XML):void
@@ -66,16 +74,14 @@ package com.acemobe.spriter.data
 			
 		}
 		
-		public	function interpolate(nextKey:TimelineKey, nextKeyTime:int, currentTime:Number):TimelineKey
+		public	function interpolate(nextKey:TimelineKey, nextKeyTime:int, currentTime:Number):void
 		{
-			return linearKey (nextKey, getTWithNextKey (nextKey, nextKeyTime, currentTime));
+			linearKey (nextKey, getTWithNextKey (nextKey, nextKeyTime, currentTime));
 		}     
 		
-		public	function linearKey(keyB:TimelineKey, t:Number):TimelineKey
+		public	function linearKey(keyB:TimelineKey, t:Number):void
 		{
 			// overridden in inherited types  return linear(this,keyB,t);
-			
-			return null;
 		}
 		
 		public	function getTWithNextKey(nextKey:TimelineKey, nextKeyTime:int, currentTime:Number):Number
@@ -108,18 +114,14 @@ package com.acemobe.spriter.data
 			return ((b-a)*t)+a;
 		}
 		
-		public	function linearSpatialInfo(infoA:SpatialInfo, infoB:SpatialInfo, spin:int, t:Number):SpatialInfo
+		public	function linearSpatialInfo(infoA:SpatialInfo, infoB:SpatialInfo, spin:int, t:Number):void
 		{
-			var	resultInfo:SpatialInfo = new SpatialInfo ();
-			
-			resultInfo.x = linear (infoA.x, infoB.x, t); 
-			resultInfo.y = linear (infoA.y, infoB.y, t);  
-			resultInfo.angle = angleLinear (infoA.angle, infoB.angle, spin, t); 
-			resultInfo.scaleX = linear (infoA.scaleX, infoB.scaleX, t); 
-			resultInfo.scaleY = linear (infoA.scaleY, infoB.scaleY, t); 
-			resultInfo.a = linear (infoA.a, infoB.a, t);
-			
-			return resultInfo;
+			info.x = linear (infoA.x, infoB.x, t); 
+			info.y = linear (infoA.y, infoB.y, t);  
+			info.angle = angleLinear (infoA.angle, infoB.angle, spin, t); 
+			info.scaleX = linear (infoA.scaleX, infoB.scaleX, t); 
+			info.scaleY = linear (infoA.scaleY, infoB.scaleY, t); 
+			info.a = linear (infoA.a, infoB.a, t);
 		}
 		
 		public	function angleLinear(angleA:Number, angleB:Number, spin:int, t:Number):Number

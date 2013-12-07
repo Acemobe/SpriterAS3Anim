@@ -71,46 +71,33 @@ package com.acemobe.spriter.data
 		public	function updateCharacter(mainKey:MainlineKey, newTime:int):void
 		{
 			var	transformedBoneKeys:Array = [];
-			var	parentInfo:SpatialInfo;
 			var	currentRef:Ref;
 			var	currentKey:TimelineKey;
-			var	nextKey:TimelineKey;
-			objectKeys = [];
 			
 			for(var	b:int = 0; b < mainKey.boneRefs.length; b++)
 			{
 				currentRef = mainKey.boneRefs[b];
+				currentKey = keyFromRef (currentRef, newTime);
 				
 				if (currentRef.parent >= 0)
 				{
-					parentInfo = transformedBoneKeys[currentRef.parent].info;
-				}
-				else
-				{
-					parentInfo = new SpatialInfo ();
+					currentKey.info.unmapFromParent (transformedBoneKeys[currentRef.parent].info);
 				}
 			
-				currentKey = keyFromRef (currentRef, newTime);
-				currentKey.info = currentKey.info.unmapFromParent (parentInfo);
-				transformedBoneKeys.push(currentKey);
+				transformedBoneKeys.push (currentKey);
 			}
 			
 			for(var	o:int = 0; o < mainKey.objectRefs.length; o++)
 			{
 				currentRef = mainKey.objectRefs[o];
+				currentKey = keyFromRef (currentRef, newTime);
 				
 				if (currentRef.parent >= 0)
 				{
-					parentInfo = transformedBoneKeys[currentRef.parent].info;
-				}
-				else
-				{
-					parentInfo = new SpatialInfo ();
+					currentKey.info.unmapFromParent (transformedBoneKeys[currentRef.parent].info);
 				}
 				
-				currentKey = keyFromRef (currentRef, newTime);
-				currentKey.info = currentKey.info.unmapFromParent (parentInfo);
-				objectKeys.push(currentKey);
+				objectKeys.push (currentKey);
 			}
 		}
 		
@@ -136,22 +123,11 @@ package com.acemobe.spriter.data
 		public	function keyFromRef(ref:Ref, newTime:int):TimelineKey
 		{
 			var timeline:TimeLine = timelines[ref.timeline];
-			var	keyA:TimelineKey = timeline.keys[ref.key];
-			var	ret:TimelineKey;
-			
+			var	keyA:TimelineKey = timeline.keys[ref.key].copy ();
+
 			if (timeline.keys.length == 1)
 			{
-				if (keyA is SpriteTimelineKey)
-				{
-					ret = new SpriteTimelineKey ();
-				}
-				else if (keyA is BoneTimelineKey)
-				{
-					ret = new BoneTimelineKey ();
-				}
-				
-				keyA.clone(ret);
-				return ret;
+				return keyA;
 			}
 			
 			var	nextKeyIndex:int = ref.key + 1;
@@ -164,17 +140,7 @@ package com.acemobe.spriter.data
 				}
 				else
 				{
-					if (keyA is SpriteTimelineKey)
-					{
-						ret = new SpriteTimelineKey ();
-					}
-					else if (keyA is BoneTimelineKey)
-					{
-						ret = new BoneTimelineKey ();
-					}
-					
-					keyA.clone(ret)					
-					return ret;
+					return keyA;
 				}
 			}
 			
@@ -186,56 +152,8 @@ package com.acemobe.spriter.data
 				keyBTime = keyBTime + length;
 			}
 			
-			return keyA.interpolate (keyB, keyBTime, currentTime);
-		}	
-
-		public	function getKeyFromRef(ref:Ref, newTime:int):TimelineKey
-		{
-			var timeline:TimeLine = timelines[ref.timeline];
-			var	keyA:TimelineKey = timeline.keys[ref.key];
-			var	ret:TimelineKey;
-			
-			if (timeline.keys.length == 1)
-			{
-				if (keyA is SpriteTimelineKey)
-				{
-					ret = new SpriteTimelineKey ();
-				}
-				else if (keyA is BoneTimelineKey)
-				{
-					ret = new BoneTimelineKey ();
-				}
-				
-				keyA.clone(ret);
-				return ret;
-			}
-			
-			var	nextKeyIndex:int = ref.key + 1;
-			
-			if (nextKeyIndex >= timeline.keys.length)
-			{
-				if (loopType == LOOPING)
-				{
-					nextKeyIndex = 0; 
-				}
-				else
-				{
-					if (keyA is SpriteTimelineKey)
-					{
-						ret = new SpriteTimelineKey ();
-					}
-					else if (keyA is BoneTimelineKey)
-					{
-						ret = new BoneTimelineKey ();
-					}
-					
-					keyA.clone(ret)					
-					return ret;
-				}
-			}
-			
-			var keyB:TimelineKey = timeline.keys[nextKeyIndex];
-			return keyB;
+			keyA.interpolate (keyB, keyBTime, currentTime);			
+			return keyA;
 		}	
 	}
 }

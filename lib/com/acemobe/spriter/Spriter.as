@@ -24,8 +24,8 @@ package com.acemobe.spriter
 		public	var	currentColor:int = 0xffffff;
 		
 		protected var imagesByName:Object;
-		protected var childImages:Vector.<Image>;
-		
+
+		public	var	baseSprite:Sprite;
 		public	var	nextAnim:String = "";
 
 		public function Spriter(name:String, data:XML, atlas:TextureAtlas)
@@ -35,13 +35,31 @@ package com.acemobe.spriter
 			this.name = name;
 			
 			imagesByName = {};
-			childImages = new <Image>[];
 			
-			animation = SpriterCache.findAnimation(name);
+			animation = SpriterCache.findAnimation (name);
 			if (!animation)
 			{
 				animation = SpriterCache.addAnimation(name, new SpriterAnimation (data, atlas));
 			}
+			
+			baseSprite = new Sprite ();
+			addChild(baseSprite);
+		}
+		
+		public override function dispose():void
+		{
+			for(var name:String in imagesByName)
+			{
+				imagesByName[name].dispose ();
+				imagesByName[name] = null;
+			}
+
+			baseSprite.removeChildren(0, -1, true);
+			removeChildren(0, -1, true);
+			
+			imagesByName = null;
+			
+			super.dispose();
 		}
 
 		public	function hasAnim (animName:String):Boolean
@@ -59,6 +77,20 @@ package com.acemobe.spriter
 			}
 
 			return false;
+		}
+		
+		public	function set entity (name:String):void
+		{
+			for (var a:int = 0; a < animation.entities.length; a++)
+			{
+				var	entity:Entity = animation.entities[a];
+				
+				if (entity.name == name)
+				{
+					currentEntity = a;
+					return;
+				}
+			}			
 		}
 		
 		public	function play (animName:String, nextAnim:String = ""):void
@@ -79,6 +111,11 @@ package com.acemobe.spriter
 						currentTime = 0;
 					}
 					
+					if (visible == false)
+					{
+						visible = true;
+						currentTime = 0;
+					}
 					return;
 				}
 			}
@@ -86,6 +123,9 @@ package com.acemobe.spriter
 		
 		public function advanceTime(time:Number):void 
 		{
+			if (!visible)
+				return;
+			
 			currentTime += time;
 			
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
@@ -95,10 +135,12 @@ package com.acemobe.spriter
 			{
 				anim.setCurrentTime (currentTime * 1000);
 				
-				removeChildren(0, -1, true);
+				if (!animation.atlas)
+					return;
 				
+				baseSprite.removeChildren(0, -1);
+
 				imagesByName = {};
-				childImages.length = 0;
 				
 				for(var	k:int = 0; k < anim.objectKeys.length; k++)
 				{   
@@ -123,15 +165,21 @@ package com.acemobe.spriter
 							image.scaleY = spriteKey.info.scaleY;
 							image.rotation = deg2rad (fixRotation (spriteKey.info.angle));
 							
-							childImages.push(image);
-							addChild(image);
+							baseSprite.addChild(image);
 						}
 					}
 				}
-				
-				if (nextAnim != "" && anim.currentTime >= anim.length)
+
+				if (anim.currentTime >= anim.length)
 				{
-					play (nextAnim);
+					if (nextAnim != "")
+					{
+						play (nextAnim);
+					}
+					else if (anim.loopType == Animation.NO_LOOPING)
+					{
+						visible = false;						
+					}
 				}
 			}
 		}

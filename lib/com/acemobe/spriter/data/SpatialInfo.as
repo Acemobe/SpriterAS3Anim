@@ -33,46 +33,50 @@ package com.acemobe.spriter.data
 				a = timelineXml.@a;
 		}
 		
-		public	function clone ():SpatialInfo
+		public	function clone (clone:SpatialInfo):void
 		{
-			var	clone:SpatialInfo = new SpatialInfo ();
 			clone.x = this.x;
 			clone.y = this.y;
 			clone.angle = this.angle;
 			clone.scaleX = this.scaleX;
 			clone.scaleY = this.scaleY;
 			clone.a = this.a;
-			return clone
+		}
+
+		public	function copy ():SpatialInfo
+		{
+			var	c:SpatialInfo = new SpatialInfo ();
+			
+			clone (c);
+			
+			return c;
 		}
 		
-		public	function	unmapFromParent(parentInfo:SpatialInfo):SpatialInfo
+		public	function	unmapFromParent(parentInfo:SpatialInfo):void
 		{
-			var	unmappedObj:SpatialInfo = clone ();
-			unmappedObj.angle += parentInfo.angle;
-			unmappedObj.scaleX *= parentInfo.scaleX;
-			unmappedObj.scaleY *= parentInfo.scaleY;
-			unmappedObj.a *= parentInfo.a;
+			angle += parentInfo.angle;
+			scaleX *= parentInfo.scaleX;
+			scaleY *= parentInfo.scaleY;
+			a *= parentInfo.a;
 			
 			if (x != 0 || y != 0)  
 			{
-				var	angle:Number = Spriter.fixRotation (parentInfo.angle);
+				var	new_angle:Number = deg2rad (Spriter.fixRotation (parentInfo.angle));
 				var	preMultX:Number = x * parentInfo.scaleX;
 				var	preMultY:Number = y * parentInfo.scaleY;
-				var	s:Number = Math.sin (deg2rad (angle));
-				var	c:Number = Math.cos (deg2rad (angle));
-				unmappedObj.x = (preMultX * c) - (preMultY * s);
-				unmappedObj.y = (preMultX * s) + (preMultY * c);
-				unmappedObj.x += parentInfo.x;
-				unmappedObj.y += parentInfo.y;
+				var	s:Number = Math.sin (new_angle);
+				var	c:Number = Math.cos (new_angle);
+				x = (preMultX * c) - (preMultY * s);
+				y = (preMultX * s) + (preMultY * c);
+				x += parentInfo.x;
+				y += parentInfo.y;
 			}
 			else 
 			{
 				// Mandatory optimization for future features           
-				unmappedObj.x = parentInfo.x;
-				unmappedObj.y = parentInfo.y;
+				x = parentInfo.x;
+				y = parentInfo.y;
 			}
-			
-			return unmappedObj;
 		}
 	}
 }

@@ -37,6 +37,14 @@ package com.acemobe.spriter.data
 			}
 		}
 		
+		public	override function copy ():*
+		{
+			var	copy:TimelineKey = new SpriteTimelineKey ();
+			clone (copy);
+			
+			return copy;
+		}
+
 		public	override function clone (clone:TimelineKey):void
 		{
 			super.clone(clone);
@@ -71,21 +79,17 @@ package com.acemobe.spriter.data
 			// at x,y,angle (counter-clockwise), offset by paintPivotX,paintPivotY		
 		}    
 		
-		public	override function linearKey (keyB:TimelineKey, t:Number):TimelineKey
+		public	override function linearKey (keyB:TimelineKey, t:Number):void
 		{
-			var returnKey:SpriteTimelineKey = new SpriteTimelineKey (); 
-			clone (returnKey);
-			returnKey.info = linearSpatialInfo (info, keyB.info, spin, t);
+			linearSpatialInfo (info, keyB.info, spin, t);
 		
 			if (!useDefaultPivot)
 			{
 				var	keyBSprite:SpriteTimelineKey = keyB as SpriteTimelineKey;
 				
-				returnKey.pivot_x = linear (pivot_x, keyBSprite.pivot_x, t);
-				returnKey.pivot_y = linear (pivot_y, keyBSprite.pivot_y, t);
+				pivot_x = linear (pivot_x, keyBSprite.pivot_x, t);
+				pivot_y = linear (pivot_y, keyBSprite.pivot_y, t);
 			}
-			
-			return returnKey;
 		}
 	}
 }
