@@ -19,17 +19,17 @@ package com.acemobe.spriter.data
 		
 		public	function parse (timelineXml:XML):void
 		{
-			if (timelineXml.attribute("x").length())
+			if (timelineXml.hasOwnProperty("@x"))
 				x = timelineXml.@x;
-			if (timelineXml.attribute("y").length())
+			if (timelineXml.hasOwnProperty("@y"))
 				y = -timelineXml.@y;
-			if (timelineXml.attribute("angle").length())
+			if (timelineXml.hasOwnProperty("@angle"))
 				angle = timelineXml.@angle;
-			if (timelineXml.attribute("scale_x").length())
+			if (timelineXml.hasOwnProperty("@scale_x"))
 				scaleX = timelineXml.@scale_x;
-			if (timelineXml.attribute("scale_y").length())
+			if (timelineXml.hasOwnProperty("@scale_y"))
 				scaleY = timelineXml.@scale_y;
-			if (timelineXml.attribute("a").length())
+			if (timelineXml.hasOwnProperty("@a"))
 				a = timelineXml.@a;
 		}
 		

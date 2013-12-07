@@ -15,22 +15,22 @@ package com.acemobe.spriter.data
 		
 		public	function parse (fileXml:XML):void
 		{
-			if (fileXml.attribute("id").length())
+			if (fileXml.hasOwnProperty("@id"))
 				id = fileXml.@id;
-			if (fileXml.attribute("name").length())
+			if (fileXml.hasOwnProperty("@name"))
 			{
 				name = fileXml.@name;
 				
 				var	pos:int = name.lastIndexOf(".png");
 				name = name.substr(0, pos);
 			}
-			if (fileXml.attribute("width").length())
+			if (fileXml.hasOwnProperty("@width"))
 				width = fileXml.@width;
-			if (fileXml.attribute("height").length())
+			if (fileXml.hasOwnProperty("@height"))
 				height = fileXml.@height;
-			if (fileXml.attribute("pivot_x").length())
+			if (fileXml.hasOwnProperty("@pivot_x"))
 				pivot_x = fileXml.@pivot_x;
-			if (fileXml.attribute("pivot_y").length())
+			if (fileXml.hasOwnProperty("@pivot_y"))
 				pivot_y = fileXml.@pivot_y;
 		}
 	}

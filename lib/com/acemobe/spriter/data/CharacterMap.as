@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class CharacterMap
 	{
 		public	var		id:int = 0;
@@ -10,17 +12,17 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (characterMapXml:XML):void
+		public	function parse (spriteAnim:SpriterAnimation, characterMapXml:XML):void
 		{
-			if (characterMapXml.attribute("id").length())
+			if (characterMapXml.hasOwnProperty("@id"))
 				id = characterMapXml.@id;
-			if (characterMapXml.attribute("name").length())
+			if (characterMapXml.hasOwnProperty("@name"))
 				name = characterMapXml.@name;
 			
 			for each(var mapXml:XML in characterMapXml.map)
 			{
 				var	map:MapInstruction = new MapInstruction ();
-				map.parse (mapXml);
+				map.parse (spriteAnim, mapXml);
 				
 				maps.push (map);
 			}

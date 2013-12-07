@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class MapInstruction
 	{
 		public	var	folder:int = 0;
@@ -11,15 +13,15 @@ package com.acemobe.spriter.data
 		{
 		}
 
-		public	function parse (mapInstructionXml:XML):void
+		public	function parse (spriteAnim:SpriterAnimation, mapInstructionXml:XML):void
 		{
-			if (mapInstructionXml.attribute("folder").length())
+			if (mapInstructionXml.hasOwnProperty("@folder"))
 				folder = mapInstructionXml.@folder;
-			if (mapInstructionXml.attribute("file").length())
+			if (mapInstructionXml.hasOwnProperty("@file"))
 				file = mapInstructionXml.@file;
-			if (mapInstructionXml.attribute("tarFolder").length())
+			if (mapInstructionXml.hasOwnProperty("@tarFolder"))
 				tarFolder = mapInstructionXml.@tarFolder;
-			if (mapInstructionXml.attribute("tarFile").length())
+			if (mapInstructionXml.hasOwnProperty("@tarFile"))
 				tarFile = mapInstructionXml.@tarFile;
 		}
 	}

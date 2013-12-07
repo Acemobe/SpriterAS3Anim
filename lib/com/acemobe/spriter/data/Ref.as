@@ -17,19 +17,19 @@ package com.acemobe.spriter.data
 		
 		public	function parse (refXml:XML):void
 		{
-			if (refXml.attribute("id").length())
+			if (refXml.hasOwnProperty("@id"))
 				id = refXml.@id;
-			if (refXml.attribute("parent").length())
+			if (refXml.hasOwnProperty("@parent"))
 				parent = refXml.@parent;
-			if (refXml.attribute("timeline").length())
+			if (refXml.hasOwnProperty("@timeline"))
 				timeline = refXml.@timeline;
-			if (refXml.attribute("key").length())
+			if (refXml.hasOwnProperty("@key"))
 				key = refXml.@key;
-			if (refXml.attribute("z_index").length())
+			if (refXml.hasOwnProperty("@z_index"))
 				z_index = refXml.@z_index;
-			if (refXml.attribute("abs_pivot_x").length())
+			if (refXml.hasOwnProperty("@abs_pivot_x"))
 				abs_pivot_x = refXml.@abs_pivot_x;
-			if (refXml.attribute("abs_pivot_y").length())
+			if (refXml.hasOwnProperty("@abs_pivot_y"))
 				abs_pivot_y = refXml.@abs_pivot_y;
 		}
 	}

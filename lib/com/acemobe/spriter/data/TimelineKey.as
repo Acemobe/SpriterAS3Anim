@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class TimelineKey
 	{
 		public	static	var	INSTANT:int = 0;
@@ -44,21 +46,21 @@ package com.acemobe.spriter.data
 			this.info.clone (clone.info);
 		}
 		
-		public	function parse (timelineXml:XML):void
+		public	function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
-			if (timelineXml.attribute("id").length())
+			if (timelineXml.hasOwnProperty("@id"))
 				id = timelineXml.@id;
-			if (timelineXml.attribute("name").length())
+			if (timelineXml.hasOwnProperty("@name"))
 				name = timelineXml.@name;
-			if (timelineXml.attribute("time").length())
+			if (timelineXml.hasOwnProperty("@time"))
 				time = timelineXml.@time;
-			if (timelineXml.attribute("c1").length())
+			if (timelineXml.hasOwnProperty("@c1"))
 				c1 = timelineXml.@c1;
-			if (timelineXml.attribute("c2").length())
+			if (timelineXml.hasOwnProperty("@c2"))
 				c2 = timelineXml.@c2;
-			if (timelineXml.attribute("spin").length())
+			if (timelineXml.hasOwnProperty("@spin"))
 				spin = timelineXml.@spin;
-			if (timelineXml.attribute("curveType").length())
+			if (timelineXml.hasOwnProperty("@curveType"))
 			{
 				switch (timelineXml.@curveType)
 				{

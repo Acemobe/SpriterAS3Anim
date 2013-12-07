@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class TimeLine
 	{
 		public	static	var	SPRITE:int = 0;
@@ -20,13 +22,13 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (timelineXml:XML):void
+		public	function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
-			if (timelineXml.attribute("id").length())
+			if (timelineXml.hasOwnProperty("@id"))
 				id = timelineXml.@id;
-			if (timelineXml.attribute("name").length())
+			if (timelineXml.hasOwnProperty("@name"))
 				name = timelineXml.@name;
-			if (timelineXml.attribute("object_type").length())
+			if (timelineXml.hasOwnProperty("@object_type"))
 			{
 				if (timelineXml.@object_type == "sprite")
 					objectType = SPRITE;
@@ -48,7 +50,7 @@ package com.acemobe.spriter.data
 						break;
 				}
 				
-				timelineKey.parse (timelineKeyXml);
+				timelineKey.parse (spriteAnim, timelineKeyXml);
 				timelineKey.timelineID = id;
 
 				keys.push (timelineKey);

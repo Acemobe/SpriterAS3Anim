@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class Entity
 	{
 		public	var	id:int = 0;
@@ -11,17 +13,17 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (entityXml:XML):void
+		public	function parse (spriteAnim:SpriterAnimation, entityXml:XML):void
 		{
-			if (entityXml.attribute("id").length())
+			if (entityXml.hasOwnProperty("@id"))
 				id = entityXml.@id;
-			if (entityXml.attribute("name").length())
+			if (entityXml.hasOwnProperty("@name"))
 				name = entityXml.@name;
 			
 			for each(var characetrMapXml:XML in entityXml.character_map)
 			{
 				var	characterMap:CharacterMap = new CharacterMap ();
-				characterMap.parse (characetrMapXml);
+				characterMap.parse (spriteAnim, characetrMapXml);
 				
 				characterMaps.push (characterMap);
 			}
@@ -29,7 +31,7 @@ package com.acemobe.spriter.data
 			for each(var animationXml:XML in entityXml.animation)
 			{
 				var	animation:Animation = new Animation ();
-				animation.parse (animationXml);
+				animation.parse (spriteAnim, animationXml);
 				
 				animations.push (animation);
 			}

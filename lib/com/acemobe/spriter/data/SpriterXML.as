@@ -22,7 +22,7 @@ package com.acemobe.spriter.data
 			for each(var entityXml:XML in data.entity)
 			{
 				var	entity:Entity = new Entity ();
-				entity.parse (entityXml);
+				entity.parse (spriteAnim, entityXml);
 				
 				spriteAnim.entities.push (entity);
 			}

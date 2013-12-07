@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class BoneTimelineKey extends TimelineKey
 	{
 		public	var	length:int = 200;
@@ -11,15 +13,15 @@ package com.acemobe.spriter.data
 			super();
 		}
 		
-		public	override function parse (timelineXml:XML):void
+		public	override function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
-			super.parse(timelineXml);
+			super.parse(spriteAnim, timelineXml);
 
 			info.parse(timelineXml.bone[0]);
 
-			if (timelineXml.attribute("length").length())
+			if (timelineXml.hasOwnProperty("@length"))
 				length = timelineXml.@length;
-			if (timelineXml.attribute("width").length())
+			if (timelineXml.hasOwnProperty("@width"))
 				width = timelineXml.@width;
 		}
 		

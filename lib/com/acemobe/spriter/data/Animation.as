@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class Animation
 	{
 		public	static	var	NO_LOOPING:int = 0;
@@ -21,15 +23,15 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (animationXml:XML):void
+		public	function parse (spriteAnim:SpriterAnimation, animationXml:XML):void
 		{
-			if (animationXml.attribute("id").length())
+			if (animationXml.hasOwnProperty("@id"))
 				id = animationXml.@id;
-			if (animationXml.attribute("name").length())
+			if (animationXml.hasOwnProperty("@name"))
 				name = animationXml.@name;
-			if (animationXml.attribute("length").length())
+			if (animationXml.hasOwnProperty("@length"))
 				length = animationXml.@length;
-			if (animationXml.attribute("looping").length())
+			if (animationXml.hasOwnProperty("@looping"))
 			{
 				if (animationXml.@looping == "true")
 					loopType = LOOPING;
@@ -40,7 +42,7 @@ package com.acemobe.spriter.data
 			for each(var mainlineXml:XML in animationXml.mainline.key)
 			{				
 				var	mainline:MainlineKey = new MainlineKey ();
-				mainline.parse (mainlineXml);
+				mainline.parse (spriteAnim, mainlineXml);
 				
 				mainlineKeys.push (mainline);
 			}
@@ -48,7 +50,7 @@ package com.acemobe.spriter.data
 			for each(var timelineXml:XML in animationXml.timeline)
 			{				
 				var	timeline:TimeLine = new TimeLine ();
-				timeline.parse (timelineXml);
+				timeline.parse (spriteAnim, timelineXml);
 				
 				timelines.push (timeline);
 			}
@@ -73,6 +75,8 @@ package com.acemobe.spriter.data
 			var	transformedBoneKeys:Array = [];
 			var	currentRef:Ref;
 			var	currentKey:TimelineKey;
+			
+			objectKeys = [];
 			
 			for(var	b:int = 0; b < mainKey.boneRefs.length; b++)
 			{

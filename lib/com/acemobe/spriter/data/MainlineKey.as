@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class MainlineKey
 	{
 		public	var	id:int = 0;
@@ -11,11 +13,11 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (animationXml:XML):void
+		public	function parse (spriteAnim:SpriterAnimation, animationXml:XML):void
 		{
-			if (animationXml.attribute("id").length())
+			if (animationXml.hasOwnProperty("@id"))
 				id = animationXml.@id;
-			if (animationXml.attribute("time").length())
+			if (animationXml.hasOwnProperty("@time"))
 				time = animationXml.@time;
 			
 			for each(var boneRefXml:XML in animationXml.bone_ref)

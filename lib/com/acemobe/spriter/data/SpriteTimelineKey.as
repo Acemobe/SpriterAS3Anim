@@ -1,5 +1,7 @@
 package com.acemobe.spriter.data
 {
+	import com.acemobe.spriter.SpriterAnimation;
+
 	public class SpriteTimelineKey extends TimelineKey
 	{
 		public	var	folder:int; // index of the folder within the ScmlObject
@@ -9,31 +11,44 @@ package com.acemobe.spriter.data
 		public	var	pivot_y:Number = 1;
 		
 		public	var	spriteName:String = "";
+		public	var	spriteName2:String = "";
+		public	var	fileRef:File;
 
 		public function SpriteTimelineKey()
 		{
 			super();
 		}
 		
-		public	override function parse (timelineXml:XML):void
+		public	override function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
-			super.parse(timelineXml);
+			super.parse(spriteAnim, timelineXml);
 			
 			info.parse(timelineXml.object[0]);
 
-			if (timelineXml.object[0].attribute("folder").length())
+			if (timelineXml.object[0].hasOwnProperty("@folder"))
 				folder = timelineXml.object[0].@folder;
-			if (timelineXml.object[0].attribute("file").length())
+			if (timelineXml.object[0].hasOwnProperty("@file"))
 				file = timelineXml.object[0].@file;
-			if (timelineXml.attribute("pivot_x").length())
+			if (timelineXml.hasOwnProperty("@pivot_x"))
 			{
 				pivot_x = timelineXml.@pivot_x;
 				useDefaultPivot = false;
 			}
-			if (timelineXml.attribute("pivot_y").length())
+			if (timelineXml.hasOwnProperty("@pivot_y"))
 			{
 				pivot_y = timelineXml.@pivot_y;
 				useDefaultPivot = false;
+			}
+			
+			var	folderRef:Folder = spriteAnim.folders[folder] as Folder;
+			fileRef = folderRef.files[file] as File;
+			spriteName = fileRef.name;
+			
+			spriteName2 = spriteName;
+			var	pos:int = spriteName2.lastIndexOf("/");
+			if (pos != -1)
+			{
+				spriteName2 = spriteName2.substr(pos + 1);
 			}
 		}
 		
@@ -56,6 +71,9 @@ package com.acemobe.spriter.data
 			c.folder = this.folder;
 			c.file = this.file;
 			c.useDefaultPivot = this.useDefaultPivot;
+			c.spriteName = this.spriteName;
+			c.spriteName2 = this.spriteName2;
+			c.fileRef = this.fileRef;
 		}
 		
 		public	override function paint():void

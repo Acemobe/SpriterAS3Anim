@@ -2,8 +2,6 @@ package com.acemobe.spriter
 {
 	import com.acemobe.spriter.data.Animation;
 	import com.acemobe.spriter.data.Entity;
-	import com.acemobe.spriter.data.File;
-	import com.acemobe.spriter.data.Folder;
 	import com.acemobe.spriter.data.SpriteTimelineKey;
 	import com.acemobe.spriter.data.TimelineKey;
 	
@@ -28,7 +26,7 @@ package com.acemobe.spriter
 		public	var	baseSprite:Sprite;
 		public	var	nextAnim:String = "";
 
-		public function Spriter(name:String, data:XML, atlas:TextureAtlas)
+		public function Spriter(name:String, data:XML, atlas:TextureAtlas = null)
 		{
 			super();
 			
@@ -48,7 +46,7 @@ package com.acemobe.spriter
 		
 		public override function dispose():void
 		{
-			for(var name:String in imagesByName)
+			for (var name:String in imagesByName)
 			{
 				imagesByName[name].dispose ();
 				imagesByName[name] = null;
@@ -130,6 +128,7 @@ package com.acemobe.spriter
 			
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
 			var	anim:Animation = entity.animations[currentAnimation] as Animation;
+			var	image:Image;
 			
 			if (anim)
 			{
@@ -138,9 +137,11 @@ package com.acemobe.spriter
 				if (!animation.atlas)
 					return;
 				
-				baseSprite.removeChildren(0, -1);
-
-				imagesByName = {};
+				for (var n:String in imagesByName)
+				{
+					image = imagesByName[n];
+					image.visible = false;
+				}
 				
 				for(var	k:int = 0; k < anim.objectKeys.length; k++)
 				{   
@@ -149,7 +150,10 @@ package com.acemobe.spriter
 					if (key is SpriteTimelineKey)
 					{
 						var	spriteKey:SpriteTimelineKey = key as SpriteTimelineKey;
-						var	image:Image = getImageByName (spriteKey);
+						image = imagesByName[spriteKey.spriteName];
+						
+						if (!image)
+							image = getImageByName (spriteKey);
 						
 						if (image)
 						{
@@ -164,6 +168,7 @@ package com.acemobe.spriter
 							image.scaleX = spriteKey.info.scaleX;
 							image.scaleY = spriteKey.info.scaleY;
 							image.rotation = deg2rad (fixRotation (spriteKey.info.angle));
+							image.visible = true;
 							
 							baseSprite.addChild(image);
 						}
@@ -216,42 +221,28 @@ package com.acemobe.spriter
 		
 		protected function getImageByName(key:SpriteTimelineKey):Image
 		{
-			var image:Image
-			
-			if (key.spriteName)
+			if (imagesByName[key.spriteName])
 			{
-				image = imagesByName[key.spriteName];
+				return imagesByName[key.spriteName];
 			}
 			
-			if (!image)
+			var image:Image			
+			var texture:Texture = animation.atlas.getTexture(key.spriteName);
+			
+			if(!texture)
 			{
-				var	folder:Folder = animation.folders[key.folder] as Folder;
-				var	file:File = folder.files[key.file] as File;
-				var	name:String = file.name;
-				
-				var texture:Texture = animation.atlas.getTexture(name);
-				if(!texture)
-				{
-					var	pos:int = name.lastIndexOf("/");
-					if (pos != -1)
-					{
-						name = name.substr(pos + 1);
-					}
-					
-					texture = animation.atlas.getTexture(name); 
-				}
-				
-				if (texture)
-				{
-					key.spriteName = name;
-					image = new Image(texture);
-					image.name = name;
-					image.color = currentColor;
-					imagesByName[name] = image;
-					
-					image.pivotX = file.pivot_x * file.width;
-					image.pivotY = (1 - file.pivot_y) * file.height;
-				}
+				texture = animation.atlas.getTexture(key.spriteName2); 
+			}
+			
+			if (texture)
+			{
+				image = new Image(texture);
+				image.name = key.spriteName;
+				image.color = currentColor;
+				imagesByName[key.spriteName] = image;
+
+				image.pivotX = key.fileRef.pivot_x * key.fileRef.width;
+				image.pivotY = (1 - key.fileRef.pivot_y) * key.fileRef.height;
 			}
 			
 			return image;
