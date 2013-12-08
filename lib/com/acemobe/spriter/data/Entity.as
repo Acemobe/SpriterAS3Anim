@@ -15,7 +15,7 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (spriteAnim:SpriterAnimation, animations:Array = null):void
+		public	function parse (spriteAnim:SpriterAnimation, anims:Array = null):void
 		{
 			if (entityXml.hasOwnProperty("@id"))
 				id = entityXml.@id;
@@ -34,7 +34,7 @@ package com.acemobe.spriter.data
 				animation.name = animationXml.@name;
 				animation.animationXml = animationXml;
 
-				if (animations == null)
+ 				if (anims == null || anims.indexOf (animation.name) != -1)
 					animation.parse (spriteAnim);
 				
 				animations.push (animation);
