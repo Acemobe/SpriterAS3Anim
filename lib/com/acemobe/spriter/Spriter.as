@@ -124,7 +124,7 @@ package com.acemobe.spriter
 			}
 		}
 		
-		public	function play (animName:String, nextAnim:String = ""):void
+		public	function playAnim (animName:String, nextAnim:String = ""):void
 		{
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
 			
@@ -214,7 +214,7 @@ package com.acemobe.spriter
 				{
 					if (nextAnim != "")
 					{
-						play (nextAnim);
+						playAnim (nextAnim);
 					}
 					else if (anim.loopType == Animation.NO_LOOPING)
 					{
