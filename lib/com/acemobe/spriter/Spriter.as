@@ -1,7 +1,9 @@
 package com.acemobe.spriter
 {
 	import com.acemobe.spriter.data.Animation;
+	import com.acemobe.spriter.data.BoxTimelineKey;
 	import com.acemobe.spriter.data.Entity;
+	import com.acemobe.spriter.data.PointTimelineKey;
 	import com.acemobe.spriter.data.SpriteTimelineKey;
 	import com.acemobe.spriter.data.TimelineKey;
 	
@@ -21,6 +23,9 @@ package com.acemobe.spriter
 		private	var	currentAnimation:int = 0; 
 		private	var	currentTime:Number = 0.0;
 		private	var	currentColor:int = 0xffffff;
+		
+		private	var	activePoints:Array = [];
+		private	var	activeBoxes:Array = [];
 		
 		private var imagesByName:Object;
 
@@ -176,6 +181,8 @@ package com.acemobe.spriter
 					image.visible = false;
 				}
 				
+				activePoints.length = 0;
+				activeBoxes.length = 0;
 				quadBatch.reset();
 				
 				for(var	k:int = 0; k < anim.objectKeys.length; k++)
@@ -207,6 +214,18 @@ package com.acemobe.spriter
 							
 							quadBatch.addImage(image);
 						}
+					}
+					else if (key is PointTimelineKey)
+					{
+						var	point:PointTimelineKey = key as PointTimelineKey;
+						
+						activePoints.push(point);
+					}
+					else if (key is BoxTimelineKey)
+					{
+						var	box:BoxTimelineKey = key as BoxTimelineKey;
+						
+						activeBoxes.push(box);
 					}
 				}
 

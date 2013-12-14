@@ -69,7 +69,7 @@ package com.acemobe.spriter.data
 			{
 				currentTime = newTime % length;
 			}
-			
+
 			updateCharacter (mainlineKeyFromTime(currentTime),currentTime);
 		}
 		

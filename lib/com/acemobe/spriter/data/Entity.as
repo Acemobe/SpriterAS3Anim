@@ -9,6 +9,7 @@ package com.acemobe.spriter.data
 		public	var	loaded:Boolean = false;
 		public	var	characterMaps:Array = [];
 		public	var	animations:Array = [];
+		public	var	objectInfos:Array = [];
 		public	var	entityXml:XML;
 		
 		public function Entity()
@@ -20,10 +21,18 @@ package com.acemobe.spriter.data
 			if (entityXml.hasOwnProperty("@id"))
 				id = entityXml.@id;
 			
-			for each(var characetrMapXml:XML in entityXml.character_map)
+			for each(var objInfoXml:XML in entityXml.obj_info)
+			{
+				var	objectInfo:ObjectInfo = new ObjectInfo ();
+				objectInfo.parse (spriteAnim, objInfoXml);
+				
+				objectInfos.push(objectInfo);
+			}
+			
+			for each(var characterMapXml:XML in entityXml.character_map)
 			{
 				var	characterMap:CharacterMap = new CharacterMap ();
-				characterMap.parse (spriteAnim, characetrMapXml);
+				characterMap.parse (spriteAnim, characterMapXml);
 				
 				characterMaps.push (characterMap);
 			}

@@ -34,11 +34,15 @@ package com.acemobe.spriter.data
 					objectType = SPRITE;
 				if (timelineXml.@object_type == "bone")
 					objectType = BONE;
+				if (timelineXml.@object_type == "box")
+					objectType = BOX;
+				if (timelineXml.@object_type == "point")
+					objectType = POINT;
 			}
 			
 			for each(var timelineKeyXml:XML in timelineXml.key)
 			{				
-				var	timelineKey:TimelineKey;
+				var	timelineKey:TimelineKey = null;
 				
 				switch (objectType)
 				{
@@ -48,12 +52,21 @@ package com.acemobe.spriter.data
 					case	BONE:
 						timelineKey = new BoneTimelineKey ();
 						break;
+					case	BOX:
+						timelineKey = new BoxTimelineKey ();
+						break;
+					case	POINT:
+						timelineKey = new PointTimelineKey ();
+						break;
 				}
 				
-				timelineKey.parse (spriteAnim, timelineKeyXml);
-				timelineKey.timelineID = id;
-
-				keys.push (timelineKey);
+				if (timelineKey)
+				{
+					timelineKey.parse (spriteAnim, timelineKeyXml);
+					timelineKey.timelineID = id;
+					
+					keys.push (timelineKey);
+				}
 			}
 		}
 	}

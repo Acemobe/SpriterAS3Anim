@@ -23,7 +23,6 @@ package com.acemobe.spriter.data
 		{
 			super.parse(spriteAnim, timelineXml);
 			
-//			info.parse(timelineXml.object[0]);
 			if (timelineXml.object[0].hasOwnProperty("@x"))
 				x = timelineXml.object[0].@x;
 			if (timelineXml.object[0].hasOwnProperty("@y"))
