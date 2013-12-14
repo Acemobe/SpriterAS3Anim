@@ -5,6 +5,7 @@ package com.acemobe.spriter.data
 	public class ObjectInfo
 	{
 		public	static	var	BOX:int = 0;
+		public	static	var	BONE:int = 1;
 		
 		public	var	name:String = "";
 		public	var	type:int = 0;
@@ -22,12 +23,17 @@ package com.acemobe.spriter.data
 			name = objectInfoXml.@name;
 			w = objectInfoXml.@w;
 			h = objectInfoXml.@h;
-			pivot_x = objectInfoXml.@pivot_x;
-			pivot_y = objectInfoXml.@pivot_y;
+			
+			if (objectInfoXml.hasOwnProperty("@pivot_x"))
+				pivot_x = objectInfoXml.@pivot_x;
+			if (objectInfoXml.hasOwnProperty("@pivot_y"))
+				pivot_y = objectInfoXml.@pivot_y;
 
 			if (objectInfoXml.hasOwnProperty("@type"))
 			{
 				if (objectInfoXml.@type == "box")
+					type = BOX;
+				else if (objectInfoXml.@type == "bone")
 					type = BOX;
 			}
 		}
