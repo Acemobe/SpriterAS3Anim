@@ -183,6 +183,7 @@ package com.acemobe.spriter
 				
 				activePoints.length = 0;
 				activeBoxes.length = 0;
+				
 				quadBatch.reset();
 				
 				for(var	k:int = 0; k < anim.objectKeys.length; k++)

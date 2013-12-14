@@ -91,24 +91,24 @@ package com.acemobe.spriter.data
 			
 		}
 		
-		public	function interpolate(nextKey:TimelineKey, nextKeyTime:int, currentTime:Number):void
+		public	function interpolate (nextKey:TimelineKey, nextKeyTime:int, currentTime:Number):void
 		{
 			linearKey (nextKey, getTWithNextKey (nextKey, nextKeyTime, currentTime));
 		}     
 		
-		public	function linearKey(keyB:TimelineKey, t:Number):void
+		public	function linearKey (keyB:TimelineKey, t:Number):void
 		{
 			// overridden in inherited types  return linear(this,keyB,t);
 		}
 		
-		public	function getTWithNextKey(nextKey:TimelineKey, nextKeyTime:int, currentTime:Number):Number
+		public	function getTWithNextKey (nextKey:TimelineKey, nextKeyTime:int, currentTime:Number):Number
 		{
 			if (curveType == INSTANT || time == nextKeyTime)
 			{
 				return 0;
 			}
 			
-			var t:Number = (currentTime-time)/(nextKeyTime-time);
+			var t:Number = (currentTime - time) / (nextKeyTime - time);
 			
 			if (curveType == LINEAR)
 			{
@@ -116,11 +116,11 @@ package com.acemobe.spriter.data
 			}
 			else if (curveType == QUADRATIC)
 			{
-				return (quadratic(0.0,c1,1.0,t));
+				return (quadratic (0.0, c1, 1.0, t));
 			}
 			else if (curveType == CUBIC)
 			{  
-				return (cubic(0.0,c1,c2,1.0,t));
+				return (cubic (0.0, c1, c2, 1.0, t));
 			}
 			
 			return 0; // Runtime should never reach here        
@@ -131,7 +131,7 @@ package com.acemobe.spriter.data
 			return ((b-a)*t)+a;
 		}
 		
-		public	function linearSpatialInfo(infoA:TimelineKey, infoB:TimelineKey, spin:int, t:Number):void
+		public	function linearSpatialInfo (infoA:TimelineKey, infoB:TimelineKey, spin:int, t:Number):void
 		{
 			x = linear (infoA.x, infoB.x, t); 
 			y = linear (infoA.y, infoB.y, t);  
@@ -141,46 +141,46 @@ package com.acemobe.spriter.data
 			a = linear (infoA.a, infoB.a, t);
 		}
 		
-		public	function angleLinear(angleA:Number, angleB:Number, spin:int, t:Number):Number
+		public	function angleLinear (angleA:Number, angleB:Number, spin:int, t:Number):Number
 		{
-			if(spin==0)
+			if (spin == 0)
 			{
 				return angleA;
 			}
-			if(spin>0)
+			if (spin > 0)
 			{
-				if((angleB-angleA)<0)
+				if ((angleB - angleA) < 0)
 				{
-					angleB+=360;
+					angleB += 360;
 				}
 			}
-			else if(spin<0)
+			else if (spin < 0)
 			{
-				if((angleB-angleA)>0)
+				if ((angleB - angleA) > 0)
 				{   
-					if (Math.abs(angleB-angleA) < 180)
+					if (Math.abs (angleB - angleA) < 180)
 					{
 						return linear (angleB, angleA, 1 - t);
 					}
 					else
-						angleB-=360;
+						angleB -= 360;
 				}
 			}
 			
 			return linear (angleA, angleB, t);
 		}
 		
-		public	function quadratic(a:Number, b:Number, c:Number, t:Number):Number
+		public	function quadratic (a:Number, b:Number, c:Number, t:Number):Number
 		{
-			return linear(linear(a,b,t),linear(b,c,t),t);
+			return linear (linear (a, b, t), linear (b, c, t), t);
 		}
 		
-		public	function cubic(a:Number, b:Number, c:Number, d:Number, t:Number):Number
+		public	function cubic (a:Number, b:Number, c:Number, d:Number, t:Number):Number
 		{
-			return linear(quadratic(a,b,c,t),quadratic(b,c,d,t),t);
+			return linear (quadratic (a, b, c, t), quadratic (b, c, d, t), t);
 		}
 		
-		public	function	unmapFromParent(parentInfo:TimelineKey):void
+		public	function unmapFromParent (parentInfo:TimelineKey):void
 		{
 			angle += parentInfo.angle;
 			scaleX *= parentInfo.scaleX;

@@ -34,7 +34,7 @@ package com.acemobe.spriter.data
 				if (objectInfoXml.@type == "box")
 					type = BOX;
 				else if (objectInfoXml.@type == "bone")
-					type = BOX;
+					type = BONE;
 			}
 		}
 	}
