@@ -64,6 +64,7 @@ package com.acemobe.spriter.data
 				{
 					timelineKey.parse (spriteAnim, timelineKeyXml);
 					timelineKey.timelineID = id;
+					timelineKey.timeline = this;
 					
 					keys.push (timelineKey);
 				}

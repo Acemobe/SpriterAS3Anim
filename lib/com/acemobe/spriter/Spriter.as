@@ -20,12 +20,15 @@ package com.acemobe.spriter
 		private	var	animation:SpriterAnimation;
 		
 		private	var	currentEntity:int = 0;
-		private	var	currentAnimation:int = 0; 
+		private	var	currentAnimation:int = -1; 
 		private	var	currentTime:Number = 0.0;
 		private	var	currentColor:int = 0xffffff;
 		
-		private	var	activePoints:Array = [];
-		private	var	activeBoxes:Array = [];
+		private	var	mCallBack:* = null;
+		
+		public	var	playbackSpeed:Number = 1;
+		public	var	activePoints:Array = [];
+		public	var	activeBoxes:Array = [];
 		
 		private var imagesByName:Object;
 
@@ -157,12 +160,15 @@ package com.acemobe.spriter
 			}
 		}
 		
+		public function setCallback (callback:*):void 
+		{
+			mCallBack = callback
+		}
+		
 		public function advanceTime(time:Number):void 
 		{
 			if (!visible)
 				return;
-			
-			currentTime += time;
 			
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
 			var	anim:Animation = entity.animations[currentAnimation] as Animation;
@@ -170,6 +176,8 @@ package com.acemobe.spriter
 			
 			if (anim)
 			{
+				currentTime += (time * playbackSpeed);
+				
 				anim.setCurrentTime (currentTime * 1000);
 				
 				if (!animation.atlas)
@@ -242,6 +250,9 @@ package com.acemobe.spriter
 					}
 				}
 			}
+			
+			if (mCallBack)
+				mCallBack (this);
 		}
 		
 		public	static function fixRotation(rotation:Number):Number 

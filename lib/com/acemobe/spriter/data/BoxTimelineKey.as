@@ -39,7 +39,7 @@ package com.acemobe.spriter.data
 		
 		public	override function copy ():*
 		{
-			var	copy:TimelineKey = new SpriteTimelineKey ();
+			var	copy:TimelineKey = new BoxTimelineKey ();
 			clone (copy);
 			
 			return copy;
@@ -49,7 +49,7 @@ package com.acemobe.spriter.data
 		{
 			super.clone(clone);
 			
-			var	c:SpriteTimelineKey = clone as SpriteTimelineKey;
+			var	c:BoxTimelineKey = clone as BoxTimelineKey;
 			
 			c.pivot_x = this.pivot_x;
 			c.pivot_y = this.pivot_y;
@@ -79,7 +79,7 @@ package com.acemobe.spriter.data
 			
 			if (!useDefaultPivot)
 			{
-				var	keyBSprite:SpriteTimelineKey = keyB as SpriteTimelineKey;
+				var	keyBSprite:BoxTimelineKey = keyB as BoxTimelineKey;
 				
 				pivot_x = linear (pivot_x, keyBSprite.pivot_x, t);
 				pivot_y = linear (pivot_y, keyBSprite.pivot_y, t);

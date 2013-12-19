@@ -21,7 +21,7 @@ package com.acemobe.spriter.data
 		
 		public	override function copy ():*
 		{
-			var	copy:TimelineKey = new SpriteTimelineKey ();
+			var	copy:TimelineKey = new PointTimelineKey ();
 			clone (copy);
 			
 			return copy;

@@ -29,6 +29,8 @@ package com.acemobe.spriter.data
 		public	var	scaleY:Number = 1; 
 		public	var	a:Number = 1;
 		
+		public	var	timeline:TimeLine = null;
+		
 		public function TimelineKey ()
 		{
 		}
@@ -58,6 +60,7 @@ package com.acemobe.spriter.data
 			clone.scaleX = this.scaleX;
 			clone.scaleY = this.scaleY;
 			clone.a = this.a;
+			clone.timeline = this.timeline;
 //			this.info.clone (clone.info);
 		}
 		
