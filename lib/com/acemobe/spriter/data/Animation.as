@@ -9,7 +9,7 @@ package com.acemobe.spriter.data
 		
 		public	var	id:int = 0;
 		public	var	name:String = "";
-		public	var	animationXml:XML;
+		public	var	animationData:*;
 		public	var	loopType:int = LOOPING;
 		public	var	length:int = 0;
 		public	var	loaded:Boolean = false;
@@ -26,35 +26,76 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (spriteAnim:SpriterAnimation):void
+		public	function parseXML (spriteAnim:SpriterAnimation):void
 		{
-			if (animationXml.hasOwnProperty("@id"))
-				id = animationXml.@id;
-			if (animationXml.hasOwnProperty("@length"))
-				length = animationXml.@length;
-			if (animationXml.hasOwnProperty("@looping"))
+			var	xml:XML = animationData as XML;
+			
+			id = xml.@id;
+			length = xml.@length;
+
+			if (xml.hasOwnProperty("@looping"))
 			{
-				if (animationXml.@looping == "true")
+				if (xml.@looping == "true")
 					loopType = LOOPING;
 				else
 					loopType = NO_LOOPING;
 			}
 			
-			for each(var mainlineXml:XML in animationXml.mainline.key)
+			for each(var mainlineXml:XML in xml.mainline.key)
 			{				
 				var	mainline:MainlineKey = new MainlineKey ();
-				mainline.parse (spriteAnim, mainlineXml);
+				mainline.parseXML (spriteAnim, mainlineXml);
 				
 				mainlineKeys.push (mainline);
 			}
 
-			for each(var timelineXml:XML in animationXml.timeline)
+			for each(var timelineXml:XML in xml.timeline)
 			{				
 				var	timeline:TimeLine = new TimeLine ();
-				timeline.parse (spriteAnim, timelineXml);
+				timeline.parseXML (spriteAnim, timelineXml);
 				
 				timelines.push (timeline);
 			}
+			
+			loaded = true;
+		}
+		
+		public	function parse (spriteAnim:SpriterAnimation):void
+		{
+			id = animationData.id;
+			length = animationData.length;
+			
+			if (animationData.hasOwnProperty("looping"))
+			{
+				if (animationData.looping == "true")
+					loopType = LOOPING;
+				else
+					loopType = NO_LOOPING;
+			}
+			
+			for each(var mainlineData:* in animationData.mainline.key)
+			{				
+				var	mainline:MainlineKey = new MainlineKey ();
+				mainline.parse (spriteAnim, mainlineData);
+				
+				mainlineKeys.push (mainline);
+			}
+			
+			for each(var timelineData:* in animationData.timeline)
+			{				
+				var	timeline:TimeLine = new TimeLine ();
+				timeline.parse (spriteAnim, timelineData);
+				
+				timelines.push (timeline);
+			}
+			
+			for each(var soundlineData:* in animationData.soundline)
+			{				
+/*				var	timeline:TimeLine = new TimeLine ();
+				timeline.parse (spriteAnim, timelineData);
+				
+				timelines.push (timeline);
+*/			}
 			
 			loaded = true;
 		}

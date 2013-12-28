@@ -10,14 +10,27 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (folderXml:XML):void
+		public	function parseXML (folderXml:XML):void
 		{
 			id = folderXml.@id;
 			
 			for each(var file:XML in folderXml.file)
 			{
 				var	f:File = new File ();
-				f.parse (file);
+				f.parseXML (file);
+				
+				files.push (f);
+			}
+		}
+
+		public	function parse (folder:*):void
+		{
+			id = folder.id;
+			
+			for (var a:int = 0; a  < folder.file.length; a++)
+			{
+				var	f:File = new File ();
+				f.parse (folder.file[a]);
 				
 				files.push (f);
 			}

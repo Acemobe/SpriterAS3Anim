@@ -13,17 +13,15 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (spriteAnim:SpriterAnimation, animationXml:XML):void
+		public	function parseXML (spriteAnim:SpriterAnimation, animationXml:XML):void
 		{
-			if (animationXml.hasOwnProperty("@id"))
-				id = animationXml.@id;
-			if (animationXml.hasOwnProperty("@time"))
-				time = animationXml.@time;
+			id = animationXml.@id;
+			time = animationXml.@time;
 			
 			for each(var boneRefXml:XML in animationXml.bone_ref)
 			{				
 				var	boneRef:Ref = new Ref ();
-				boneRef.parse (boneRefXml);
+				boneRef.parseXML (boneRefXml);
 				
 				boneRefs.push (boneRef);
 			}
@@ -31,11 +29,32 @@ package com.acemobe.spriter.data
 			for each(var objectRefXml:XML in animationXml.object_ref)
 			{				
 				var	objectRef:Ref = new Ref ();
-				objectRef.parse (objectRefXml);
+				objectRef.parseXML (objectRefXml);
 				
 				objectRefs.push (objectRef);
 			}
 		}
 
+		public	function parse (spriteAnim:SpriterAnimation, animationData:*):void
+		{
+			id = animationData.id;
+			time = animationData.time;
+			
+			for each(var boneRefData:* in animationData.bone_ref)
+			{				
+				var	boneRef:Ref = new Ref ();
+				boneRef.parse (boneRefData);
+				
+				boneRefs.push (boneRef);
+			}
+			
+			for each(var objectRefData:* in animationData.object_ref)
+			{				
+				var	objectRef:Ref = new Ref ();
+				objectRef.parse (objectRefData);
+				
+				objectRefs.push (objectRef);
+			}
+		}
 	}
 }

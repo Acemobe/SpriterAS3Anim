@@ -13,16 +13,26 @@ package com.acemobe.spriter.data
 		{
 		}
 
-		public	function parse (spriteAnim:SpriterAnimation, mapInstructionXml:XML):void
+		public	function parseXML (spriteAnim:SpriterAnimation, mapInstructionXml:XML):void
 		{
-			if (mapInstructionXml.hasOwnProperty("@folder"))
-				folder = mapInstructionXml.@folder;
-			if (mapInstructionXml.hasOwnProperty("@file"))
-				file = mapInstructionXml.@file;
+			folder = mapInstructionXml.@folder;
+			file = mapInstructionXml.@file;
+
 			if (mapInstructionXml.hasOwnProperty("@tarFolder"))
 				tarFolder = mapInstructionXml.@tarFolder;
 			if (mapInstructionXml.hasOwnProperty("@tarFile"))
 				tarFile = mapInstructionXml.@tarFile;
+		}
+
+		public	function parse (spriteAnim:SpriterAnimation, mapInstructionData:*):void
+		{
+			folder = mapInstructionData.folder;
+			file = mapInstructionData.file;
+			
+			if (mapInstructionData.hasOwnProperty("tarFolder"))
+				tarFolder = mapInstructionData.tarFolder;
+			if (mapInstructionData.hasOwnProperty("tarFile"))
+				tarFile = mapInstructionData.tarFile;
 		}
 	}
 }

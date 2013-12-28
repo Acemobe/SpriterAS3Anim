@@ -19,9 +19,9 @@ package com.acemobe.spriter.data
 			super();
 		}
 		
-		public	override function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
+		public	override function parseXML (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
-			super.parse(spriteAnim, timelineXml);
+			super.parseXML(spriteAnim, timelineXml);
 			
 			if (timelineXml.object[0].hasOwnProperty("@x"))
 				x = timelineXml.object[0].@x;
@@ -36,10 +36,9 @@ package com.acemobe.spriter.data
 			if (timelineXml.object[0].hasOwnProperty("@a"))
 				a = timelineXml.object[0].@a;
 
-			if (timelineXml.object[0].hasOwnProperty("@folder"))
-				folder = timelineXml.object[0].@folder;
-			if (timelineXml.object[0].hasOwnProperty("@file"))
-				file = timelineXml.object[0].@file;
+			folder = timelineXml.object[0].@folder;
+			file = timelineXml.object[0].@file;
+
 			if (timelineXml.hasOwnProperty("@pivot_x"))
 			{
 				pivot_x = timelineXml.@pivot_x;
@@ -48,6 +47,50 @@ package com.acemobe.spriter.data
 			if (timelineXml.hasOwnProperty("@pivot_y"))
 			{
 				pivot_y = timelineXml.@pivot_y;
+				useDefaultPivot = false;
+			}
+			
+			var	folderRef:Folder = spriteAnim.folders[folder] as Folder;
+			fileRef = folderRef.files[file] as File;
+			spriteName = fileRef.name;
+			
+			spriteName2 = spriteName;
+			var	pos:int = spriteName2.lastIndexOf("/");
+			if (pos != -1)
+			{
+				spriteName2 = spriteName2.substr(pos + 1);
+			}
+		}
+		
+		public	override function parse (spriteAnim:SpriterAnimation, timelineData:*):void
+		{
+			super.parse(spriteAnim, timelineData);
+			
+			if (timelineData.object.hasOwnProperty("x"))
+				x = timelineData.object.x;
+			if (timelineData.object.hasOwnProperty("y"))
+				y = -timelineData.object.y;
+			if (timelineData.object.hasOwnProperty("angle"))
+				angle = timelineData.object.angle;
+			
+			folder = timelineData.object.folder;
+			file = timelineData.object.file;
+				
+			if (timelineData.object.hasOwnProperty("scale_x"))
+				scaleX = timelineData.object.scale_x;
+			if (timelineData.object.hasOwnProperty("scale_y"))
+				scaleY = timelineData.object.scale_y;
+			if (timelineData.object.hasOwnProperty("a"))
+				a = timelineData.object.a;
+			
+			if (timelineData.hasOwnProperty("pivot_x"))
+			{
+				pivot_x = timelineData.pivot_x;
+				useDefaultPivot = false;
+			}
+			if (timelineData.hasOwnProperty("pivot_y"))
+			{
+				pivot_y = timelineData.pivot_y;
 				useDefaultPivot = false;
 			}
 			

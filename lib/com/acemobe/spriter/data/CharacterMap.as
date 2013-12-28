@@ -12,14 +12,26 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (spriteAnim:SpriterAnimation, characterMapXml:XML):void
+		public	function parseXML (spriteAnim:SpriterAnimation, characterMapXml:XML):void
 		{
-			if (characterMapXml.hasOwnProperty("@id"))
-				id = characterMapXml.@id;
-			if (characterMapXml.hasOwnProperty("@name"))
-				name = characterMapXml.@name;
+			id = characterMapXml.@id;
+			name = characterMapXml.@name;
 			
 			for each(var mapXml:XML in characterMapXml.map)
+			{
+				var	map:MapInstruction = new MapInstruction ();
+				map.parseXML (spriteAnim, mapXml);
+				
+				maps.push (map);
+			}
+		}
+
+		public	function parse (spriteAnim:SpriterAnimation, characterMapData:*):void
+		{
+			id = characterMapData.id;
+			name = characterMapData.name;
+			
+			for each(var mapXml:* in characterMapData.map)
 			{
 				var	map:MapInstruction = new MapInstruction ();
 				map.parse (spriteAnim, mapXml);

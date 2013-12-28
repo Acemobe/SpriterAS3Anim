@@ -22,7 +22,7 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
+		public	function parseXML (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
 			if (timelineXml.hasOwnProperty("@id"))
 				id = timelineXml.@id;
@@ -62,7 +62,52 @@ package com.acemobe.spriter.data
 				
 				if (timelineKey)
 				{
-					timelineKey.parse (spriteAnim, timelineKeyXml);
+					timelineKey.parseXML (spriteAnim, timelineKeyXml);
+					timelineKey.timelineID = id;
+					timelineKey.timeline = this;
+					
+					keys.push (timelineKey);
+				}
+			}
+		}
+
+		public	function parse (spriteAnim:SpriterAnimation, timelineData:*):void
+		{
+			id = timelineData.id;
+			name = timelineData.name;
+			
+			if (timelineData.object_type == "sprite")
+				objectType = SPRITE;
+			else if (timelineData.object_type == "bone")
+				objectType = BONE;
+			else if (timelineData.object_type == "box")
+				objectType = BOX;
+			else if (timelineData.object_type == "point")
+				objectType = POINT;
+			
+			for each(var timelineKeyData:* in timelineData.key)
+			{				
+				var	timelineKey:TimelineKey = null;
+				
+				switch (objectType)
+				{
+					case	SPRITE:
+						timelineKey = new SpriteTimelineKey ();
+						break;
+					case	BONE:
+						timelineKey = new BoneTimelineKey ();
+						break;
+					case	BOX:
+						timelineKey = new BoxTimelineKey ();
+						break;
+					case	POINT:
+						timelineKey = new PointTimelineKey ();
+						break;
+				}
+				
+				if (timelineKey)
+				{
+					timelineKey.parse (spriteAnim, timelineKeyData);
 					timelineKey.timelineID = id;
 					timelineKey.timeline = this;
 					

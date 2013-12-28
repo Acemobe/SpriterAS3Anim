@@ -13,9 +13,9 @@ package com.acemobe.spriter.data
 			super();
 		}
 		
-		public	override function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
+		public	override function parseXML (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
-			super.parse(spriteAnim, timelineXml);
+			super.parseXML(spriteAnim, timelineXml);
 			
 			if (timelineXml.object[0].hasOwnProperty("@x"))
 				x = timelineXml.object[0].@x;
@@ -33,6 +33,30 @@ package com.acemobe.spriter.data
 			if (timelineXml.hasOwnProperty("@pivot_y"))
 			{
 				pivot_y = timelineXml.@pivot_y;
+				useDefaultPivot = false;
+			}
+		}
+		
+		public	override function parse (spriteAnim:SpriterAnimation, timelineData:*):void
+		{
+			super.parse(spriteAnim, timelineData);
+			
+			if (timelineData.object.hasOwnProperty("x"))
+				x = timelineData.object.x;
+			if (timelineData.object.hasOwnProperty("y"))
+				y = -timelineData.object.y;
+			if (timelineData.object.hasOwnProperty("scale_x"))
+				scaleX = timelineData.object.scale_x;
+			if (timelineData.object.hasOwnProperty("scale_y"))
+				scaleY = timelineData.object.scale_y;
+			if (timelineData.hasOwnProperty("pivot_x"))
+			{
+				pivot_x = timelineData.pivot_x;
+				useDefaultPivot = false;
+			}
+			if (timelineData.hasOwnProperty("pivot_y"))
+			{
+				pivot_y = timelineData.pivot_y;
 				useDefaultPivot = false;
 			}
 		}

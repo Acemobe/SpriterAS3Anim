@@ -35,7 +35,7 @@ package com.acemobe.spriter
 		private	var	quadBatch:QuadBatch;
 		private	var	nextAnim:String = "";
 
-		public function Spriter(name:String, data:XML, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
+		public function Spriter(name:String, data:*, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
 		{
 			super();
 			
@@ -78,7 +78,8 @@ package com.acemobe.spriter
 				
 				if (entity.name == name && !entity.loaded)
 				{
-					entity.parse (animation, animations);
+					if (entity.entityData is XML)
+						entity.parseXML (animation, animations);
 				}
 			}
 		}
@@ -126,7 +127,7 @@ package com.acemobe.spriter
 					
 					if (anim.name == animName && !anim.loaded)
 					{
-						anim.parse (animation);
+						anim.parseXML (animation);
 					}
 				}
 			}

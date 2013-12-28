@@ -1,6 +1,7 @@
 package com.acemobe.spriter
 {
-	import com.acemobe.spriter.data.SpriterXML;
+	import com.acemobe.spriter.parsers.SpriterJSON;
+	import com.acemobe.spriter.parsers.SpriterXML;
 	
 	import starling.textures.TextureAtlas;
 
@@ -11,10 +12,14 @@ package com.acemobe.spriter
 		public	var	activeCharacterMap:Array = [];
 		public	var	atlas:TextureAtlas;
 		
-		public function SpriterAnimation(data:XML, atlas:TextureAtlas, entities:Array = null, animations:Array = null)
+		public function SpriterAnimation(data:*, atlas:TextureAtlas, entities:Array = null, animations:Array = null)
 		{
 			this.atlas = atlas;
-			SpriterXML.parse (this, data, entities, animations);
+			
+			if (data is XML)
+				SpriterXML.parse (this, data, entities, animations);
+			else 
+				SpriterJSON.parse (this, data, entities, animations);
 		}
 	}
 }

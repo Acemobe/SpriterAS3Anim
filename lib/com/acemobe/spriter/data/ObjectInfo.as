@@ -18,7 +18,7 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (spriteAnim:SpriterAnimation, objectInfoXml:XML):void
+		public	function parseXML (spriteAnim:SpriterAnimation, objectInfoXml:XML):void
 		{
 			name = objectInfoXml.@name;
 			w = objectInfoXml.@w;
@@ -36,6 +36,23 @@ package com.acemobe.spriter.data
 				else if (objectInfoXml.@type == "bone")
 					type = BONE;
 			}
+		}
+
+		public	function parse (spriteAnim:SpriterAnimation, objectInfoData:*):void
+		{
+			name = objectInfoData.name;
+			w = objectInfoData.w;
+			h = objectInfoData.h;
+			
+			if (objectInfoData.hasOwnProperty("pivot_x"))
+				pivot_x = objectInfoData.pivot_x;
+			if (objectInfoData.hasOwnProperty("pivot_y"))
+				pivot_y = objectInfoData.pivot_y;
+			
+			if (objectInfoData.type == "box")
+				type = BOX;
+			else if (objectInfoData.type == "bone")
+				type = BONE;
 		}
 	}
 }

@@ -64,7 +64,7 @@ package com.acemobe.spriter.data
 //			this.info.clone (clone.info);
 		}
 		
-		public	function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
+		public	function parseXML (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
 			if (timelineXml.hasOwnProperty("@id"))
 				id = timelineXml.@id;
@@ -86,6 +86,27 @@ package com.acemobe.spriter.data
 						curveType = INSTANT;
 						break;
 				}
+			}
+		}
+		
+		public	function parse (spriteAnim:SpriterAnimation, timelineData:*):void
+		{
+			id = timelineData.id;
+			name = timelineData.name;
+			time = timelineData.time;
+
+			if (timelineData.hasOwnProperty("c1"))
+				c1 = timelineData.c1;
+			if (timelineData.hasOwnProperty("c2"))
+				c2 = timelineData.c2;
+			if (timelineData.hasOwnProperty("spin"))
+				spin = timelineData.spin;
+
+			switch (timelineData.curveType)
+			{
+				case	0:
+					curveType = INSTANT;
+					break;
 			}
 		}
 		

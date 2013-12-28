@@ -15,10 +15,10 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (refXml:XML):void
+		public	function parseXML (refXml:XML):void
 		{
-			if (refXml.hasOwnProperty("@id"))
-				id = refXml.@id;
+			id = refXml.@id;
+
 			if (refXml.hasOwnProperty("@parent"))
 				parent = refXml.@parent;
 			if (refXml.hasOwnProperty("@timeline"))
@@ -31,6 +31,24 @@ package com.acemobe.spriter.data
 				abs_pivot_x = refXml.@abs_pivot_x;
 			if (refXml.hasOwnProperty("@abs_pivot_y"))
 				abs_pivot_y = refXml.@abs_pivot_y;
+		}
+
+		public	function parse (refData:*):void
+		{
+			id = refData.id;
+
+			if (refData.hasOwnProperty("parent"))
+				parent = refData.parent;
+			if (refData.hasOwnProperty("timeline"))
+				timeline = refData.timeline;
+			if (refData.hasOwnProperty("key"))
+				key = refData.key;
+			if (refData.hasOwnProperty("z_index"))
+				z_index = refData.z_index;
+			if (refData.hasOwnProperty("abs_pivot_x"))
+				abs_pivot_x = refData.abs_pivot_x;
+			if (refData.hasOwnProperty("abs_pivot_y"))
+				abs_pivot_y = refData.abs_pivot_y;
 		}
 	}
 }

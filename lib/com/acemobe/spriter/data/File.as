@@ -13,25 +13,39 @@ package com.acemobe.spriter.data
 		{
 		}
 		
-		public	function parse (fileXml:XML):void
+		public	function parseXML (fileXml:XML):void
 		{
-			if (fileXml.hasOwnProperty("@id"))
-				id = fileXml.@id;
-			if (fileXml.hasOwnProperty("@name"))
+			id = fileXml.@id;
+
+			name = fileXml.@name;
+			
+			var	pos:int = name.lastIndexOf(".png");
+			if (pos != -1)
 			{
-				name = fileXml.@name;
-				
-				var	pos:int = name.lastIndexOf(".png");
 				name = name.substr(0, pos);
 			}
-			if (fileXml.hasOwnProperty("@width"))
-				width = fileXml.@width;
-			if (fileXml.hasOwnProperty("@height"))
-				height = fileXml.@height;
-			if (fileXml.hasOwnProperty("@pivot_x"))
-				pivot_x = fileXml.@pivot_x;
-			if (fileXml.hasOwnProperty("@pivot_y"))
-				pivot_y = fileXml.@pivot_y;
+			
+			width = fileXml.@width;
+			height = fileXml.@height;
+			pivot_x = fileXml.@pivot_x;
+			pivot_y = fileXml.@pivot_y;
+		}
+
+		public	function parse (file:*):void
+		{
+			id = file.id;
+			name = file.name;
+				
+			var	pos:int = name.lastIndexOf(".png");
+			if (pos != -1)
+			{
+				name = name.substr(0, pos);
+			}
+
+			width = file.width;
+			height = file.height;
+			pivot_x = file.pivot_x;
+			pivot_y = file.pivot_y;
 		}
 	}
 }

@@ -9,14 +9,24 @@ package com.acemobe.spriter.data
 			super();
 		}
 		
-		public	override function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
+		public	override function parseXML (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
-			super.parse(spriteAnim, timelineXml);
+			super.parseXML(spriteAnim, timelineXml);
 			
 			if (timelineXml.object[0].hasOwnProperty("@x"))
 				x = timelineXml.object[0].@x;
 			if (timelineXml.object[0].hasOwnProperty("@y"))
 				y = -timelineXml.object[0].@y;
+		}
+		
+		public	override function parse (spriteAnim:SpriterAnimation, timelineData:*):void
+		{
+			super.parse(spriteAnim, timelineData);
+			
+			if (timelineData.object.hasOwnProperty("x"))
+				x = timelineData.object.x;
+			if (timelineData.object.hasOwnProperty("y"))
+				y = -timelineData.object.y;
 		}
 		
 		public	override function copy ():*

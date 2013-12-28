@@ -13,10 +13,10 @@ package com.acemobe.spriter.data
 			super();
 		}
 		
-		public	override function parse (spriteAnim:SpriterAnimation, timelineXml:XML):void
+		public	override function parseXML (spriteAnim:SpriterAnimation, timelineXml:XML):void
 		{
-			super.parse(spriteAnim, timelineXml);
-
+			super.parseXML(spriteAnim, timelineXml);
+			
 			if (timelineXml.bone[0].hasOwnProperty("@x"))
 				x = timelineXml.bone[0].@x;
 			if (timelineXml.bone[0].hasOwnProperty("@y"))
@@ -34,6 +34,29 @@ package com.acemobe.spriter.data
 				length = timelineXml.@length;
 			if (timelineXml.hasOwnProperty("@width"))
 				width = timelineXml.@width;
+		}
+		
+		public	override function parse (spriteAnim:SpriterAnimation, timelineData:*):void
+		{
+			super.parse (spriteAnim, timelineData);
+			
+			if (timelineData.bone.hasOwnProperty("x"))
+				x = timelineData.bone.x;
+			if (timelineData.bone.hasOwnProperty("y"))
+				y = -timelineData.bone.y;
+			if (timelineData.bone.hasOwnProperty("angle"))
+				angle = timelineData.bone.angle;
+			if (timelineData.bone.hasOwnProperty("scale_x"))
+				scaleX = timelineData.bone.scale_x;
+			if (timelineData.bone.hasOwnProperty("scale_y"))
+				scaleY = timelineData.bone.scale_y;
+			if (timelineData.bone.hasOwnProperty("a"))
+				a = timelineData.bone.a;
+			
+			if (timelineData.hasOwnProperty("length"))
+				length = timelineData.length;
+			if (timelineData.hasOwnProperty("width"))
+				width = timelineData.width;
 		}
 		
 		public	override function paint():void
