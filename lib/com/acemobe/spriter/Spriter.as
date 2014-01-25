@@ -34,6 +34,7 @@ package com.acemobe.spriter
 
 		private	var	quadBatch:QuadBatch;
 		private	var	nextAnim:String = "";
+		private	var	callback:Function;
 
 		public function Spriter(name:String, data:*, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
 		{
@@ -133,11 +134,12 @@ package com.acemobe.spriter
 			}
 		}
 		
-		public	function playAnim (animName:String, nextAnim:String = ""):void
+		public	function playAnim (animName:String, nextAnim:String = "", callback:* = null):void
 		{
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
 			
 			this.nextAnim = nextAnim;
+			this.callback = callback;
 			
 			for (var a:int = 0; a < entity.animations.length; a++)
 			{
@@ -244,6 +246,10 @@ package com.acemobe.spriter
 					if (nextAnim != "")
 					{
 						playAnim (nextAnim);
+					}
+					else if (callback != null)
+					{
+						callback (this);
 					}
 					else if (anim.loopType == Animation.NO_LOOPING)
 					{
