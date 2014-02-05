@@ -67,7 +67,6 @@ package com.acemobe.spriter
 			
 			for (name in colorByName)
 			{
-				colorByName[name].dispose ();
 				colorByName[name] = null;
 			}
 			
@@ -203,7 +202,6 @@ package com.acemobe.spriter
 				for (var n:String in imagesByName)
 				{
 					image = imagesByName[n];
-					image.visible = false;
 				}
 				
 				activePoints.length = 0;
