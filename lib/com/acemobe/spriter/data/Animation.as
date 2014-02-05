@@ -111,7 +111,7 @@ package com.acemobe.spriter.data
 				currentTime = newTime % length;
 			}
 
-			updateCharacter (mainlineKeyFromTime(currentTime),currentTime);
+			updateCharacter (mainlineKeyFromTime(currentTime), currentTime);
 		}
 		
 		public	function updateCharacter(mainKey:MainlineKey, newTime:int):void

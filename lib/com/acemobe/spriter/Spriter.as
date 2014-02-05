@@ -24,31 +24,33 @@ package com.acemobe.spriter
 		private	var	currentTime:Number = 0.0;
 		private	var	currentColor:int = 0xffffff;
 		
-		private	var	mCallBack:* = null;
+		private	var	mFrameCallBack:Function = null;
+		private	var	mCompleteCallback:Function = null;
 		
 		public	var	playbackSpeed:Number = 1;
 		public	var	activePoints:Array = [];
 		public	var	activeBoxes:Array = [];
 		
 		private var imagesByName:Object;
+		private var colorByName:Object;
 
 		private	var	quadBatch:QuadBatch;
 		private	var	nextAnim:String = "";
-		private	var	callback:Function;
 
-		public function Spriter(name:String, data:*, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
+		public function Spriter(name:String, animName:String, data:*, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
 		{
 			super();
 			
 			this.name = name;
 			
 			imagesByName = {};
+			colorByName = {};
 			
-			animation = SpriterCache.findAnimation (name);
+			animation = SpriterCache.findAnimation (animName);
 			
 			if (!animation)
 			{
-				animation = SpriterCache.addAnimation (name, new SpriterAnimation (data, atlas, entities, animations));
+				animation = SpriterCache.addAnimation (animName, new SpriterAnimation (animName, data, atlas, entities, animations));
 			}
 			
 			quadBatch = new QuadBatch ();
@@ -62,15 +64,27 @@ package com.acemobe.spriter
 				imagesByName[name].dispose ();
 				imagesByName[name] = null;
 			}
-
+			
+			for (name in colorByName)
+			{
+				colorByName[name].dispose ();
+				colorByName[name] = null;
+			}
+			
 			quadBatch.dispose();
 			removeChildren(0, -1, true);
 			
 			imagesByName = null;
+			colorByName = null;
 			
 			super.dispose();
 		}
 
+		public	function getAnimationName ():String
+		{
+			return animation.name;
+		}
+		
 		public	function loadEntity (name:String, animations:Array = null):void
 		{
 			for (var a:int = 0; a < animation.entities.length; a++)
@@ -139,7 +153,7 @@ package com.acemobe.spriter
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
 			
 			this.nextAnim = nextAnim;
-			this.callback = callback;
+			mCompleteCallback = callback;
 			
 			for (var a:int = 0; a < entity.animations.length; a++)
 			{
@@ -163,9 +177,9 @@ package com.acemobe.spriter
 			}
 		}
 		
-		public function setCallback (callback:*):void 
+		public function setFrameCallback (callback:*):void 
 		{
-			mCallBack = callback
+			mFrameCallBack = callback
 		}
 		
 		public function advanceTime(time:Number):void 
@@ -219,6 +233,7 @@ package com.acemobe.spriter
 							
 							image.x = spriteKey.x;
 							image.y = spriteKey.y;
+							image.color = colorByName[spriteKey.spriteName];
 							image.scaleX = spriteKey.scaleX;
 							image.scaleY = spriteKey.scaleY;
 							image.rotation = deg2rad (fixRotation (spriteKey.angle));
@@ -247,9 +262,9 @@ package com.acemobe.spriter
 					{
 						playAnim (nextAnim);
 					}
-					else if (callback != null)
+					else if (mCompleteCallback != null)
 					{
-						callback (this);
+						mCompleteCallback (this);
 					}
 					else if (anim.loopType == Animation.NO_LOOPING)
 					{
@@ -258,8 +273,8 @@ package com.acemobe.spriter
 				}
 			}
 			
-			if (mCallBack)
-				mCallBack (this);
+			if (mFrameCallBack)
+				mFrameCallBack (this);
 		}
 		
 		public	static function fixRotation(rotation:Number):Number 
@@ -287,9 +302,19 @@ package com.acemobe.spriter
 			for(var name:String in imagesByName)
 			{
 				imagesByName[name].color = value;
+				colorByName[name].color = value;
 			}
 			
 			currentColor = value;
+		}
+		
+		public	function setImageColor (image:String, value:Number):void
+		{
+			if (imagesByName[image])
+			{
+				colorByName[image] = value;
+				imagesByName[image].color = value;
+			}			
 		}
 		
 		protected function getImageByName(key:SpriteTimelineKey):Image
@@ -309,13 +334,12 @@ package com.acemobe.spriter
 			
 			if (texture)
 			{
-				image = new Image(texture);
+				imagesByName[key.spriteName] = image = new Image(texture);
 				image.name = key.spriteName;
-				image.color = currentColor;
-				imagesByName[key.spriteName] = image;
-
 				image.pivotX = key.fileRef.pivot_x * key.fileRef.width;
 				image.pivotY = (1 - key.fileRef.pivot_y) * key.fileRef.height;
+
+				colorByName[key.spriteName] = image.color = currentColor;
 			}
 			
 			return image;
