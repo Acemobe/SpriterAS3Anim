@@ -227,8 +227,8 @@ package com.acemobe.spriter
 						{
 							if (!spriteKey.useDefaultPivot)
 							{
-								image.pivotX = spriteKey.pivot_x * image.width;
-								image.pivotY = spriteKey.pivot_y * image.height;
+								image.pivotX = spriteKey.pivot_x * spriteKey.fileRef.width;
+								image.pivotY = (1 - spriteKey.pivot_y) * spriteKey.fileRef.height;
 							}
 							
 							image.x = spriteKey.x;

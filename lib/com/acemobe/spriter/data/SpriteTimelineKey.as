@@ -39,14 +39,14 @@ package com.acemobe.spriter.data
 			folder = timelineXml.object[0].@folder;
 			file = timelineXml.object[0].@file;
 
-			if (timelineXml.hasOwnProperty("@pivot_x"))
+			if (timelineXml.object[0].hasOwnProperty("@pivot_x"))
 			{
-				pivot_x = timelineXml.@pivot_x;
+				pivot_x = timelineXml.object[0].@pivot_x;
 				useDefaultPivot = false;
 			}
-			if (timelineXml.hasOwnProperty("@pivot_y"))
+			if (timelineXml.object[0].hasOwnProperty("@pivot_y"))
 			{
-				pivot_y = timelineXml.@pivot_y;
+				pivot_y = timelineXml.object[0].@pivot_y;
 				useDefaultPivot = false;
 			}
 			
@@ -83,14 +83,14 @@ package com.acemobe.spriter.data
 			if (timelineData.object.hasOwnProperty("a"))
 				a = timelineData.object.a;
 			
-			if (timelineData.hasOwnProperty("pivot_x"))
+			if (timelineData.object.hasOwnProperty("pivot_x"))
 			{
-				pivot_x = timelineData.pivot_x;
+				pivot_x = timelineData.object.pivot_x;
 				useDefaultPivot = false;
 			}
-			if (timelineData.hasOwnProperty("pivot_y"))
+			if (timelineData.object.hasOwnProperty("pivot_y"))
 			{
-				pivot_y = timelineData.pivot_y;
+				pivot_y = timelineData.object.pivot_y;
 				useDefaultPivot = false;
 			}
 			
@@ -132,7 +132,7 @@ package com.acemobe.spriter.data
 		
 		public	override function paint():void
 		{
-			var	paintPivotX:int;
+/*			var	paintPivotX:int;
 			var	paintPivotY:int;
 			
 			if (useDefaultPivot)
@@ -149,6 +149,7 @@ package com.acemobe.spriter.data
 			// paint image represented by
 			// ScmlObject.activeCharacterMap[folder].files[file],fileReference 
 			// at x,y,angle (counter-clockwise), offset by paintPivotX,paintPivotY		
+*/
 		}    
 		
 		public	override function linearKey (keyB:TimelineKey, t:Number):void
