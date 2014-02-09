@@ -236,8 +236,16 @@ package com.acemobe.spriter
 							image.scaleY = spriteKey.scaleY;
 							image.rotation = deg2rad (fixRotation (spriteKey.angle));
 							image.visible = true;
-							
+
 							quadBatch.addImage(image);
+							
+							if (colorByName[spriteKey.spriteName] != 0xffffff)
+							{
+//								if (texture && (quad.tinted|| parentAlpha != 1.0))
+//									mTinted = true;
+								
+								quadBatch.setQuadColor (quadBatch.numQuads - 1, colorByName[spriteKey.spriteName]);
+							}
 						}
 					}
 					else if (key is PointTimelineKey)
@@ -308,9 +316,10 @@ package com.acemobe.spriter
 		
 		public	function setImageColor (image:String, value:Number):void
 		{
+			colorByName[image] = value;
+			
 			if (imagesByName[image])
 			{
-				colorByName[image] = value;
 				imagesByName[image].color = value;
 			}			
 		}
@@ -337,7 +346,10 @@ package com.acemobe.spriter
 				image.pivotX = key.fileRef.pivot_x * key.fileRef.width;
 				image.pivotY = (1 - key.fileRef.pivot_y) * key.fileRef.height;
 
-				colorByName[key.spriteName] = image.color = currentColor;
+				if (!colorByName[key.spriteName])
+				{
+					colorByName[key.spriteName] = image.color = currentColor;
+				}
 			}
 			
 			return image;
