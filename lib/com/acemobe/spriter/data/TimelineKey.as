@@ -78,11 +78,11 @@ package com.acemobe.spriter.data
 				c2 = timelineXml.@c2;
 			if (timelineXml.hasOwnProperty("@spin"))
 				spin = timelineXml.@spin;
-			if (timelineXml.hasOwnProperty("@curveType"))
+			if (timelineXml.hasOwnProperty("@curve_type"))
 			{
-				switch (timelineXml.@curveType)
+				switch (timelineXml.@curve_type.toString())
 				{
-					case	0:
+					case	"instant":
 						curveType = INSTANT;
 						break;
 				}
