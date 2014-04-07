@@ -3,9 +3,12 @@ package com.acemobe.spriter
 	import com.acemobe.spriter.data.Animation;
 	import com.acemobe.spriter.data.BoxTimelineKey;
 	import com.acemobe.spriter.data.Entity;
+	import com.acemobe.spriter.data.Folder;
 	import com.acemobe.spriter.data.PointTimelineKey;
 	import com.acemobe.spriter.data.SpriteTimelineKey;
 	import com.acemobe.spriter.data.TimelineKey;
+	
+	import flash.utils.Dictionary;
 	
 	import starling.animation.IAnimatable;
 	import starling.display.Image;
@@ -78,10 +81,46 @@ package com.acemobe.spriter
 			
 			super.dispose();
 		}
+		
+		public	function clearImages ():void
+		{
+			for (var name:String in imagesByName)
+			{
+				imagesByName[name].dispose ();
+				imagesByName[name] = null;
+			}
+			
+			imagesByName = [];
+		}
 
+		public	function clearMapping ():void
+		{
+			mTextureMapping = new Dictionary ();
+		}
+		
 		public	function getAnimationName ():String
 		{
 			return animation.name;
+		}
+		
+		public	function get folders ():Array
+		{
+			return animation.folders;
+		}
+		
+		public	function getfolder (name:String):Folder
+		{
+			for (var a:int = 0; a < animation.folders.length; a++)
+			{
+				var	folder:Folder = animation.folders[a];
+				
+				if (folder.name == name)
+				{
+					return folder; 
+				}
+			}
+			
+			return null;
 		}
 		
 		public	function loadEntity (name:String, animations:Array = null):void
@@ -198,11 +237,6 @@ package com.acemobe.spriter
 				
 				if (!animation.atlas)
 					return;
-				
-				for (var n:String in imagesByName)
-				{
-					image = imagesByName[n];
-				}
 				
 				activePoints.length = 0;
 				activeBoxes.length = 0;
@@ -321,8 +355,10 @@ package com.acemobe.spriter
 			if (imagesByName[image])
 			{
 				imagesByName[image].color = value;
-			}			
+			}
 		}
+		
+		public	var		mTextureMapping:Dictionary = new Dictionary ();
 		
 		protected function getImageByName(key:SpriteTimelineKey):Image
 		{
@@ -331,12 +367,37 @@ package com.acemobe.spriter
 				return imagesByName[key.spriteName];
 			}
 			
+			var	spriteName:String = key.spriteName;
+			var	spriteName2:String = key.spriteName2;
+
+			if (mTextureMapping[key.spriteName])
+			{
+				spriteName = mTextureMapping[key.spriteName];
+				
+				var	pos:int = spriteName.lastIndexOf("/");
+				if (pos != -1)
+				{
+					spriteName2 = spriteName.substr(pos + 1);
+				}
+			}
+			
+			if (mTextureMapping[key.folderRef.name])
+			{
+				spriteName = mTextureMapping[key.folderRef.name];
+				
+				pos = spriteName.lastIndexOf("/");
+				if (pos != -1)
+				{
+					spriteName2 = spriteName.substr(pos + 1);
+				}
+			}
+			
 			var image:Image			
-			var texture:Texture = animation.atlas.getTexture(key.spriteName);
+			var texture:Texture = animation.atlas.getTexture(spriteName);
 			
 			if(!texture)
 			{
-				texture = animation.atlas.getTexture(key.spriteName2); 
+				texture = animation.atlas.getTexture(spriteName2); 
 			}
 			
 			if (texture)

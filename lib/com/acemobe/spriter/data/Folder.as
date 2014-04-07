@@ -13,6 +13,7 @@ package com.acemobe.spriter.data
 		public	function parseXML (folderXml:XML):void
 		{
 			id = folderXml.@id;
+			name = folderXml.@name;
 			
 			for each(var file:XML in folderXml.file)
 			{
@@ -26,6 +27,7 @@ package com.acemobe.spriter.data
 		public	function parse (folder:*):void
 		{
 			id = folder.id;
+			name = folder.name;
 			
 			for (var a:int = 0; a  < folder.file.length; a++)
 			{

@@ -13,6 +13,7 @@ package com.acemobe.spriter.data
 		public	var	spriteName:String = "";
 		public	var	spriteName2:String = "";
 		public	var	fileRef:File;
+		public	var	folderRef:Folder;
 
 		public function SpriteTimelineKey()
 		{
@@ -50,15 +51,14 @@ package com.acemobe.spriter.data
 				useDefaultPivot = false;
 			}
 			
-			var	folderRef:Folder = spriteAnim.folders[folder] as Folder;
+			folderRef = spriteAnim.folders[folder] as Folder;
 			fileRef = folderRef.files[file] as File;
 			spriteName = fileRef.name;
 			
-			spriteName2 = spriteName;
-			var	pos:int = spriteName2.lastIndexOf("/");
+			var	pos:int = spriteName.lastIndexOf("/");
 			if (pos != -1)
 			{
-				spriteName2 = spriteName2.substr(pos + 1);
+				spriteName2 = spriteName.substr(pos + 1);
 			}
 		}
 		
@@ -94,15 +94,14 @@ package com.acemobe.spriter.data
 				useDefaultPivot = false;
 			}
 			
-			var	folderRef:Folder = spriteAnim.folders[folder] as Folder;
+			folderRef = spriteAnim.folders[folder] as Folder;
 			fileRef = folderRef.files[file] as File;
 			spriteName = fileRef.name;
 			
-			spriteName2 = spriteName;
-			var	pos:int = spriteName2.lastIndexOf("/");
+			var	pos:int = spriteName.lastIndexOf("/");
 			if (pos != -1)
 			{
-				spriteName2 = spriteName2.substr(pos + 1);
+				spriteName2 = spriteName.substr(pos + 1);
 			}
 		}
 		
@@ -128,6 +127,7 @@ package com.acemobe.spriter.data
 			c.spriteName = this.spriteName;
 			c.spriteName2 = this.spriteName2;
 			c.fileRef = this.fileRef;
+			c.folderRef = this.folderRef;
 		}
 		
 		public	override function paint():void
