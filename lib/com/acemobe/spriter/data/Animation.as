@@ -125,7 +125,15 @@ package com.acemobe.spriter.data
 			for(var	b:int = 0; b < mainKey.boneRefs.length; b++)
 			{
 				currentRef = mainKey.boneRefs[b];
-				currentKey = keyFromRef (currentRef, newTime);
+				
+				if (mainKey.curveType != MainlineKey.INSTANT)
+				{
+					currentKey = keyFromRef (currentRef, newTime);
+				}
+				else
+				{
+					currentKey = timelines[currentRef.timeline].keys[currentRef.key].copy ();
+				}
 				
 				if (currentRef.parent >= 0)
 				{
@@ -138,7 +146,14 @@ package com.acemobe.spriter.data
 			for(var	o:int = 0; o < mainKey.objectRefs.length; o++)
 			{
 				currentRef = mainKey.objectRefs[o];
-				currentKey = keyFromRef (currentRef, newTime);
+				if (mainKey.curveType != MainlineKey.INSTANT)
+				{
+					currentKey = keyFromRef (currentRef, newTime);
+				}
+				else
+				{
+					currentKey = timelines[currentRef.timeline].keys[currentRef.key].copy ();
+				}
 				
 				if (currentRef.parent >= 0)
 				{

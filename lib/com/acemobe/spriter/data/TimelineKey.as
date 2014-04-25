@@ -85,6 +85,15 @@ package com.acemobe.spriter.data
 					case	"instant":
 						curveType = INSTANT;
 						break;
+					case	"linear":
+						curveType = LINEAR;
+						break;
+					case	"quadratic":
+						curveType = QUADRATIC;
+						break;
+					case	"cubic":
+						curveType = CUBIC;
+						break;
 				}
 			}
 		}
@@ -104,8 +113,17 @@ package com.acemobe.spriter.data
 
 			switch (timelineData.curveType)
 			{
-				case	0:
+				case	"instant":
 					curveType = INSTANT;
+					break;
+				case	"linear":
+					curveType = LINEAR;
+					break;
+				case	"quadratic":
+					curveType = QUADRATIC;
+					break;
+				case	"cubic":
+					curveType = CUBIC;
 					break;
 			}
 		}
@@ -136,7 +154,7 @@ package com.acemobe.spriter.data
 			
 			if (curveType == LINEAR)
 			{
-				return t;        
+				return t;
 			}
 			else if (curveType == QUADRATIC)
 			{

@@ -40,7 +40,7 @@ package com.acemobe.spriter
 		private	var	quadBatch:QuadBatch;
 		private	var	nextAnim:String = "";
 
-		public function Spriter(name:String, animName:String, data:*, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
+		public function Spriter(name:String, animName:String, data:* = null, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
 		{
 			super();
 			
@@ -58,6 +58,11 @@ package com.acemobe.spriter
 			
 			quadBatch = new QuadBatch ();
 			addChild (quadBatch);
+		}
+		
+		public	function setAnimation (name:String):void
+		{
+			animation = SpriterCache.findAnimation (name);
 		}
 		
 		public override function dispose():void

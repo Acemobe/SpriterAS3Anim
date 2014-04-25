@@ -4,8 +4,14 @@ package com.acemobe.spriter.data
 
 	public class MainlineKey
 	{
+		public	static	var	INSTANT:int = 0;
+		public	static	var	LINEAR:int = 1;
+		public	static	var	QUADRATIC:int = 2;
+		public	static	var	CUBIC:int = 3;
+
 		public	var	id:int = 0;
 		public	var	time:int = 0;
+		public	var	curveType:int = LINEAR;
 		public	var	boneRefs:Array = [];
 		public	var	objectRefs:Array = [];
 		
@@ -18,6 +24,25 @@ package com.acemobe.spriter.data
 			id = animationXml.@id;
 			time = animationXml.@time;
 			
+			if (animationXml.hasOwnProperty("@curve_type"))
+			{
+				switch (animationXml.@curve_type.toString())
+				{
+					case	"instant":
+						curveType = INSTANT;
+						break;
+					case	"linear":
+						curveType = LINEAR;
+						break;
+					case	"quadratic":
+						curveType = QUADRATIC;
+						break;
+					case	"cubic":
+						curveType = CUBIC;
+						break;
+				}
+			}
+
 			for each(var boneRefXml:XML in animationXml.bone_ref)
 			{				
 				var	boneRef:Ref = new Ref ();
@@ -40,6 +65,25 @@ package com.acemobe.spriter.data
 			id = animationData.id;
 			time = animationData.time;
 			
+			if (animationData.hasOwnProperty ("curve_type"))
+			{
+				switch (animationData.curve_type)
+				{
+					case	"instant":
+						curveType = INSTANT;
+						break;
+					case	"linear":
+						curveType = LINEAR;
+						break;
+					case	"quadratic":
+						curveType = QUADRATIC;
+						break;
+					case	"cubic":
+						curveType = CUBIC;
+						break;
+				}
+			}
+
 			for each(var boneRefData:* in animationData.bone_ref)
 			{				
 				var	boneRef:Ref = new Ref ();
