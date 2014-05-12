@@ -209,6 +209,10 @@ package com.acemobe.spriter
 						currentAnimation = a;
 						currentTime = 0;
 					}
+					else if (anim.currentTime >= anim.length)
+					{
+						currentTime = 0;
+					}
 					
 					if (visible == false)
 					{
@@ -275,6 +279,7 @@ package com.acemobe.spriter
 							image.scaleY = spriteKey.scaleY;
 							image.rotation = deg2rad (fixRotation (spriteKey.angle));
 							image.visible = true;
+							image.alpha = spriteKey.a;
 
 							quadBatch.addImage(image);
 							
@@ -416,6 +421,10 @@ package com.acemobe.spriter
 				{
 					colorByName[key.spriteName] = image.color = currentColor;
 				}
+			}
+			else
+			{
+//				trace ("Missing texture: " + spriteName2);
 			}
 			
 			return image;
