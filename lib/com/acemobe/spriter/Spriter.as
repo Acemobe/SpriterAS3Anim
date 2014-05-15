@@ -191,7 +191,7 @@ package com.acemobe.spriter
 			}
 		}
 		
-		public	function playAnim (animName:String, nextAnim:String = "", callback:* = null):void
+		public	function playAnim (animName:String, nextAnim:String = "", callback:* = null, force:Boolean = false):void
 		{
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
 			
@@ -204,7 +204,7 @@ package com.acemobe.spriter
 				
 				if (anim.name == animName)
 				{
-					if (currentAnimation != a)
+					if (currentAnimation != a || force)
 					{
 						currentAnimation = a;
 						currentTime = 0;
