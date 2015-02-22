@@ -40,7 +40,7 @@ package com.acemobe.spriter
 		private	var	quadBatch:QuadBatch;
 		private	var	nextAnim:String = "";
 
-		public function Spriter(name:String, animName:String, data:* = null, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
+		public function Spriter(name:String, animName:String, data:* = null, entities:Array = null, animations:Array = null)
 		{
 			super();
 			
@@ -53,7 +53,7 @@ package com.acemobe.spriter
 			
 			if (!animation)
 			{
-				animation = SpriterCache.addAnimation (animName, new SpriterAnimation (animName, data, atlas, entities, animations));
+				animation = SpriterCache.addAnimation (animName, new SpriterAnimation (animName, data, entities, animations));
 			}
 			
 			quadBatch = new QuadBatch ();
@@ -156,6 +156,16 @@ package com.acemobe.spriter
 			}			
 		}
 		
+		public	function setEntityTextureAtlas (atlas:TextureAtlas):void
+		{
+			var	entity:Entity = animation.entities[currentEntity] as Entity;
+			
+			if (entity)
+			{
+				entity.atlas = atlas;
+			}
+		}
+		
 		public	function hasAnim (animName:String):Boolean
 		{
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
@@ -235,6 +245,10 @@ package com.acemobe.spriter
 				return;
 			
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
+			
+			if (!entity.atlas)
+				return;
+
 			var	anim:Animation = entity.animations[currentAnimation] as Animation;
 			var	image:Image;
 			
@@ -243,9 +257,6 @@ package com.acemobe.spriter
 				currentTime += (time * playbackSpeed);
 				
 				anim.setCurrentTime (currentTime * 1000);
-				
-				if (!animation.atlas)
-					return;
 				
 				activePoints.length = 0;
 				activeBoxes.length = 0;
@@ -312,13 +323,28 @@ package com.acemobe.spriter
 					{
 						playAnim (nextAnim);
 					}
-					else if (mCompleteCallback != null)
+					
+					if (mCompleteCallback != null)
 					{
 						mCompleteCallback (this);
 					}
-					else if (anim.loopType == Animation.NO_LOOPING)
+					
+					if (anim.loopType == Animation.NO_LOOPING)
 					{
 						visible = false;						
+					}
+				}
+				else if (anim.looped && 
+					(nextAnim != "" || mCompleteCallback != null))
+				{
+					if (nextAnim)
+					{
+						playAnim (nextAnim);
+					}
+					
+					if (mCompleteCallback)
+					{
+						mCompleteCallback (this);
 					}
 				}
 			}
@@ -329,14 +355,14 @@ package com.acemobe.spriter
 		
 		public	static function fixRotation(rotation:Number):Number 
 		{
-			while (rotation > 360)
-			{
-				rotation -= 360;
-			}
-			
 			while (rotation < 0)
 			{
 				rotation += 360;
+			}
+			
+			while (rotation >= 360)
+			{
+				rotation -= 360;
 			}
 			
 			return 360 - rotation;
@@ -402,12 +428,13 @@ package com.acemobe.spriter
 				}
 			}
 			
-			var image:Image			
-			var texture:Texture = animation.atlas.getTexture(spriteName);
+			var image:Image;
+			var	entity:Entity = animation.entities[currentEntity] as Entity;
+			var texture:Texture = entity.atlas.getTexture(spriteName);
 			
 			if(!texture)
 			{
-				texture = animation.atlas.getTexture(spriteName2); 
+				texture = entity.atlas.getTexture(spriteName2); 
 			}
 			
 			if (texture)

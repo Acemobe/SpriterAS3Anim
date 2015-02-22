@@ -200,12 +200,7 @@ package com.acemobe.spriter.data
 			{
 				if ((angleB - angleA) > 0)
 				{   
-					if (Math.abs (angleB - angleA) < 180)
-					{
-						return linear (angleB, angleA, 1 - t);
-					}
-					else
-						angleB -= 360;
+					angleB -= 360;
 				}
 			}
 			
@@ -224,7 +219,15 @@ package com.acemobe.spriter.data
 		
 		public	function unmapFromParent (parentInfo:TimelineKey):void
 		{
-			angle += parentInfo.angle;
+			if (parentInfo.scaleX * parentInfo.scaleY < 0)
+			{
+				angle = (360 - angle) + parentInfo.angle;
+			}
+			else
+			{
+				angle += parentInfo.angle;
+			}
+			
 			scaleX *= parentInfo.scaleX;
 			scaleY *= parentInfo.scaleY;
 			a *= parentInfo.a;

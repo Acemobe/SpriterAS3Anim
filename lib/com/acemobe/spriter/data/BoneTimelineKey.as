@@ -93,7 +93,7 @@ package com.acemobe.spriter.data
 		// keyB must be BoneTimelineKeys
 		{
 			linearSpatialInfo(this, keyB, spin, t);
-			
+
 			if (paintDebugBones)
 			{
 				var keyBBone:BoneTimelineKey = keyB as BoneTimelineKey; 

@@ -1,6 +1,8 @@
 package com.acemobe.spriter.data
 {
 	import com.acemobe.spriter.SpriterAnimation;
+	
+	import starling.textures.TextureAtlas;
 
 	public class Entity
 	{
@@ -11,6 +13,7 @@ package com.acemobe.spriter.data
 		public	var	animations:Array = [];
 		public	var	objectInfos:Array = [];
 		public	var	entityData:*;
+		public	var	atlas:TextureAtlas;
 		
 		public function Entity()
 		{

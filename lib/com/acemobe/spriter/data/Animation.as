@@ -13,6 +13,8 @@ package com.acemobe.spriter.data
 		public	var	loopType:int = LOOPING;
 		public	var	length:int = 0;
 		public	var	loaded:Boolean = false;
+		
+		public	var	looped:Boolean = true;
 
 		public	var	mainlineKeys:Array = [];
 		public	var	timelines:Array = [];
@@ -102,6 +104,11 @@ package com.acemobe.spriter.data
 		
 		public	function setCurrentTime(newTime:Number):void
 		{
+			looped = false;
+
+			if (newTime >= length)
+				looped = true;
+			
 			if(loopType == NO_LOOPING)
 			{
 				currentTime = Math.min (newTime, length);
