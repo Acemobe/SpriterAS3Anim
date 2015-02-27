@@ -39,8 +39,9 @@ package com.acemobe.spriter
 
 		private	var	quadBatch:QuadBatch;
 		private	var	nextAnim:String = "";
+		private	var	curAtlas:TextureAtlas;
 
-		public function Spriter(name:String, animName:String, data:* = null, entities:Array = null, animations:Array = null)
+		public function Spriter(name:String, animName:String, data:* = null, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
 		{
 			super();
 			
@@ -53,7 +54,7 @@ package com.acemobe.spriter
 			
 			if (!animation)
 			{
-				animation = SpriterCache.addAnimation (animName, new SpriterAnimation (animName, data, entities, animations));
+				animation = SpriterCache.addAnimation (animName, new SpriterAnimation (animName, data, atlas, entities, animations));
 			}
 			
 			quadBatch = new QuadBatch ();
@@ -245,14 +246,17 @@ package com.acemobe.spriter
 				return;
 			
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
-			
-			if (!entity.atlas)
-				return;
-
 			var	anim:Animation = entity.animations[currentAnimation] as Animation;
+			curAtlas = entity.atlas;
+			
+			if (!curAtlas)
+			{
+				curAtlas = animation.atlas;
+			}
+
 			var	image:Image;
 			
-			if (anim)
+			if (anim && curAtlas)
 			{
 				currentTime += (time * playbackSpeed);
 				
@@ -430,11 +434,11 @@ package com.acemobe.spriter
 			
 			var image:Image;
 			var	entity:Entity = animation.entities[currentEntity] as Entity;
-			var texture:Texture = entity.atlas.getTexture(spriteName);
+			var texture:Texture = curAtlas.getTexture(spriteName);
 			
 			if(!texture)
 			{
-				texture = entity.atlas.getTexture(spriteName2); 
+				texture = curAtlas.getTexture(spriteName2); 
 			}
 			
 			if (texture)

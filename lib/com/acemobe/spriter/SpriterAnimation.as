@@ -3,6 +3,8 @@ package com.acemobe.spriter
 	import com.acemobe.spriter.parsers.SpriterJSON;
 	import com.acemobe.spriter.parsers.SpriterXML;
 	
+	import starling.textures.TextureAtlas;
+	
 	public class SpriterAnimation
 	{
 		public	var	name:String = "";
@@ -10,8 +12,9 @@ package com.acemobe.spriter
 		public	var	folders:Array = [];
 		public	var	entities:Array = []; // <entity> tags  
 		public	var	activeCharacterMap:Array = [];
+		public	var	atlas:TextureAtlas;
 		
-		public function SpriterAnimation(name:String, data:*, entities:Array = null, animations:Array = null)
+		public function SpriterAnimation(name:String, data:*, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
 		{
 			this.name = name;
 			
