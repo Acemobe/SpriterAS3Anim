@@ -17,6 +17,7 @@ package com.acemobe.spriter
 		public function SpriterAnimation(name:String, data:*, atlas:TextureAtlas = null, entities:Array = null, animations:Array = null)
 		{
 			this.name = name;
+			this.atlas = atlas;
 			
 			if (data is XML)
 				SpriterXML.parse (this, data, entities, animations);
